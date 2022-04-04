@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Select image"
+        android:id="@+id/selectImageFragment"
+        android:icon="@drawable/ic_select_image" />
+    <item android:title="Image search"
+        android:id="@+id/imageSearchFragment"
+        android:icon="@drawable/ic_image_search" />
+    <item android:title="Saved results"
+        android:id="@+id/savedResultsFragment"
+        android:icon="@drawable/ic_saved_results" />
+</menu>
