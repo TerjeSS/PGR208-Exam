@@ -8,16 +8,16 @@
     <fragment
         android:id="@+id/selectImageFragment"
         android:name="com.example.pgr208exam.Fragments.SelectImageFragment"
-        android:label="fragment_select_image"
+        android:label="Select image"
         tools:layout="@layout/fragment_select_image" />
     <fragment
         android:id="@+id/imageSearchFragment"
         android:name="com.example.pgr208exam.Fragments.ImageSearchFragment"
-        android:label="fragment_image_search"
+        android:label="Image search"
         tools:layout="@layout/fragment_image_search" />
     <fragment
         android:id="@+id/savedResultsFragment"
         android:name="com.example.pgr208exam.Fragments.SavedResultsFragment"
-        android:label="fragment_saved_results"
+        android:label="Saved results"
         tools:layout="@layout/fragment_saved_results" />
 </navigation>
