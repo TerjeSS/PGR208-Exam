@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.pgr208exam.R
 import com.example.pgr208exam.UriToBitmap
@@ -22,6 +24,8 @@ class SelectImageFragment : Fragment() {
 
     public lateinit var selectImageView: ImageView
     public lateinit var imageUri: String
+    public lateinit var selectTextView: TextView
+    public lateinit var uploadButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +40,8 @@ class SelectImageFragment : Fragment() {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_select_image, container, false)
         selectImageView = view.findViewById(R.id.imageview_select_image)
+        selectTextView = view.findViewById(R.id.textview_select_image)
+        uploadButton = view.findViewById(R.id.upload_button)
         selectImageView.setOnClickListener(View.OnClickListener {
             val i = Intent()
             i.type = "*/*"
@@ -48,12 +54,14 @@ class SelectImageFragment : Fragment() {
     }
 
     //Callback for getting image/url stored on the device
-    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            imageUri = it.data?.data.toString()
-            val selectedImage: Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
-            selectImageView.setImageBitmap(selectedImage)
-        }
+    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == Activity.RESULT_OK)
+        imageUri = it.data?.data.toString()
+        val selectedImage : Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
+        selectImageView.setImageBitmap(selectedImage)
+
+        selectTextView.text = "Allrighty now you can upload"
+        uploadButton.visibility = View.VISIBLE
     }
 
 }
