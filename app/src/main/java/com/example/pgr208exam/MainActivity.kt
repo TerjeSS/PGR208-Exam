@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
 
 class MainActivity : AppCompatActivity() {
 
-    private var dbHelper = FeedReaderDbHelper(this)
+    //private var dbHelper = FeedReaderDbHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -40,17 +40,17 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        val imagesArray = intArrayOf(R.drawable.one, R.drawable.two, R.drawable.three)
+        /*val imagesArray = intArrayOf(R.drawable.one, R.drawable.two, R.drawable.three)
 
         for (item in imagesArray) {
             dbHelper.writableDatabase.insert("images", null, ContentValues().apply {
                 put("image", bitArray(item))
             })
-        }
+        }*/
 
     }
 
-    fun bitArray(x: Int): ByteArray {
+    /*fun bitArray(x: Int): ByteArray {
         //Dummy data in SQLite
         val bitmap = (x as BitmapDrawable).bitmap
         val stream = ByteArrayOutputStream()
@@ -58,5 +58,5 @@ class MainActivity : AppCompatActivity() {
         val bitmapData = stream.toByteArray()
 
         return bitmapData;
-    }
+    }*/
 }
