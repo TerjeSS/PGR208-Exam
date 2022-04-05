@@ -1,5 +1,6 @@
 package com.example.pgr208exam.Fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -19,7 +20,8 @@ import java.util.logging.Level.INFO
 
 class SelectImageFragment : Fragment() {
 
-    public lateinit var selectImageView : ImageView
+    public lateinit var selectImageView: ImageView
+    public lateinit var imageUri: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +48,12 @@ class SelectImageFragment : Fragment() {
     }
 
     //Callback for getting image/url stored on the device
-    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-
-        val selectedImage : Bitmap = getBitmap(requireContext(), null, it.data?.data.toString(), ::UriToBitmap)
-        selectImageView.setImageBitmap(selectedImage)
+    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            imageUri = it.data?.data.toString()
+            val selectedImage: Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
+            selectImageView.setImageBitmap(selectedImage)
+        }
     }
-
 
 }
