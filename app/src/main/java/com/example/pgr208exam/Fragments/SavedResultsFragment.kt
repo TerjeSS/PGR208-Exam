@@ -1,10 +1,6 @@
 package com.example.pgr208exam.Fragments
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -40,36 +36,36 @@ class SavedResultsFragment : Fragment() {
 
         linearLayout = view.findViewById(R.id.linearLayout)
 
-        val newLayout: LinearLayout = LinearLayout(context)
-        val params: LayoutParams = LayoutParams(
-            LayoutParams.MATCH_PARENT,
-            300
-        )
-        newLayout.layoutParams = params
-        linearLayout.addView(newLayout)
-
-        val imageView: ImageView = ImageView(context)
-        val imageParams: LayoutParams = LayoutParams(
-            100,
-            250
-        )
-        imageView.layoutParams = imageParams
-
-
-
         val button = view.findViewById<Button>(R.id.button)
         button.setOnClickListener {
-
-            ((activity as MainActivity).databaseQuery())
-
+            ((activity as MainActivity).dummyData())
         }
 
 
+        val bitmapArray = ((activity as MainActivity).getImage())
 
+        for (item in bitmapArray) {
+            val newLayout: LinearLayout = LinearLayout(context)
+            val params: LayoutParams = LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                300
+            )
+            newLayout.layoutParams = params
+            linearLayout.addView(newLayout)
+
+            val imageView: ImageView = ImageView(context)
+            val imageParams: LayoutParams = LayoutParams(
+                100,
+                250
+            )
+            imageView.layoutParams = imageParams
+
+            imageView.setImageBitmap(item)
+            newLayout.addView(imageView)
+        }
 
         return view
     }
 
-
-    }
+}
 

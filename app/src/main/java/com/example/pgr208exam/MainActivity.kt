@@ -1,6 +1,7 @@
 package com.example.pgr208exam
 
 import android.content.ContentValues
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -44,20 +45,32 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        val imagesArray = intArrayOf(R.drawable.one, R.drawable.two, R.drawable.three)
-
-
-
     }
 
-    fun databaseQuery() {
+    fun dummyData() {
         dbHelper.writableDatabase.insert("newtable", null, ContentValues().apply {
+            put("image", bitArray(R.drawable.three))
+            put("image", bitArray(R.drawable.two))
             put("image", bitArray(R.drawable.one))
         })
     }
 
+    fun getImage(): ArrayList<Bitmap> {
+        var bitmapArray = arrayListOf<Bitmap>()
+        val cursor: Cursor = dbHelper.writableDatabase.query("newtable", arrayOf("id", "image"),
+            null, null, null, null, null, null)
+
+        while (cursor.moveToNext()) {
+            val retrievedId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+            val retrievedImage = cursor.getBlob(cursor.getColumnIndexOrThrow("image"))
+            val image2: Bitmap = BitmapFactory.decodeByteArray(retrievedImage, 0, retrievedImage.size)
+            bitmapArray.add(image2)
+        }
+        return bitmapArray
+    }
+
     fun bitArray(x: Int): ByteArray {
-        //Dummy data in SQLite
+        //Convert image to bitArray
         val stream = ByteArrayOutputStream()
         val bitmap = BitmapFactory.decodeResource(resources, R.drawable.one)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
