@@ -47,11 +47,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun dummyData() {
+    fun dummyData(x: Int) {
         dbHelper.writableDatabase.insert("newtable", null, ContentValues().apply {
-            put("image", bitArray(R.drawable.three))
-            put("image", bitArray(R.drawable.two))
-            put("image", bitArray(R.drawable.one))
+            put("image", bitArray(x))
         })
     }
 
@@ -72,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     fun bitArray(x: Int): ByteArray {
         //Convert image to bitArray
         val stream = ByteArrayOutputStream()
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.one)
+        val bitmap = BitmapFactory.decodeResource(resources, x)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         val bitmapData = stream.toByteArray()
 

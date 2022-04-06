@@ -38,7 +38,7 @@ class SavedResultsFragment : Fragment() {
 
         val button = view.findViewById<Button>(R.id.button)
         button.setOnClickListener {
-            ((activity as MainActivity).dummyData())
+            ((activity as MainActivity).dummyData(R.drawable.three))
         }
 
 
@@ -47,9 +47,10 @@ class SavedResultsFragment : Fragment() {
         for (item in bitmapArray) {
             val newLayout: LinearLayout = LinearLayout(context)
             val params: LayoutParams = LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                300
-            )
+                100,
+                250
+
+                )
             newLayout.layoutParams = params
             linearLayout.addView(newLayout)
 
