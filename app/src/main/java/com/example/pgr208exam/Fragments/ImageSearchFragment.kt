@@ -13,23 +13,12 @@ import com.example.pgr208exam.ItemAdapter
 import com.example.pgr208exam.R
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ImageSearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ImageSearchFragment : Fragment() {
 
     val dummyData = Constants.getDummyData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -40,7 +29,7 @@ class ImageSearchFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_image_search, container, false)
         val recyclerView : RecyclerView = view.findViewById<RecyclerView>(R.id.rc_view)
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        recyclerView.layoutManager = GridLayoutManager(context, 3)
         recyclerView.adapter = ItemAdapter(dummyData, requireContext())
 
         return view;
