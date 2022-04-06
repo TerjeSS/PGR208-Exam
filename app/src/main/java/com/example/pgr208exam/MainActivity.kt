@@ -2,8 +2,11 @@ package com.example.pgr208exam
 
 import android.content.ContentValues
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,7 +17,7 @@ import java.io.ByteArrayOutputStream
 
 class MainActivity : AppCompatActivity() {
 
-    //private var dbHelper = FeedReaderDbHelper(this)
+    private var dbHelper = FeedReaderDbHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -40,23 +43,25 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        /*val imagesArray = intArrayOf(R.drawable.one, R.drawable.two, R.drawable.three)
+        val imagesArray = intArrayOf(R.drawable.one, R.drawable.two, R.drawable.three)
 
-        for (item in imagesArray) {
-            dbHelper.writableDatabase.insert("images", null, ContentValues().apply {
-                put("image", bitArray(item))
-            })
-        }*/
+
 
     }
 
-    /*fun bitArray(x: Int): ByteArray {
+    fun databaseQuery() {
+        dbHelper.writableDatabase.insert("newtable", null, ContentValues().apply {
+            put("image", bitArray(R.drawable.one))
+        })
+    }
+
+    fun bitArray(x: Int): ByteArray {
         //Dummy data in SQLite
-        val bitmap = (x as BitmapDrawable).bitmap
         val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.one)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         val bitmapData = stream.toByteArray()
 
         return bitmapData;
-    }*/
+    }
 }

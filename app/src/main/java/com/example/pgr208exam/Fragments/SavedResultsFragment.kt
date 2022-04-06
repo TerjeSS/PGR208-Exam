@@ -1,13 +1,20 @@
 package com.example.pgr208exam.Fragments
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
+import com.example.pgr208exam.MainActivity
 import com.example.pgr208exam.R
 
 class SavedResultsFragment : Fragment() {
@@ -29,36 +36,35 @@ class SavedResultsFragment : Fragment() {
     ): View? {
 
         // Inflate the layout for this fragment
-        var view = inflater.inflate(R.layout.fragment_saved_results, container, false)
+        val view = inflater.inflate(R.layout.fragment_saved_results, container, false)
 
         linearLayout = view.findViewById(R.id.linearLayout)
 
-        var firstArray = arrayOf(R.drawable.one, R.drawable.two)
-        var secondArray = arrayOf(R.drawable.three, R.drawable.two, R.drawable.one)
-        var bothArrays = arrayOf(firstArray, secondArray)
+        val newLayout: LinearLayout = LinearLayout(context)
+        val params: LayoutParams = LayoutParams(
+            LayoutParams.MATCH_PARENT,
+            300
+        )
+        newLayout.layoutParams = params
+        linearLayout.addView(newLayout)
 
-        for (item in bothArrays) {
-            val horizontalScroll: LinearLayout = LinearLayout(context)
-            var params: LayoutParams = LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                300
-            )
-            horizontalScroll.layoutParams = params
-            linearLayout.addView(horizontalScroll)
+        val imageView: ImageView = ImageView(context)
+        val imageParams: LayoutParams = LayoutParams(
+            100,
+            250
+        )
+        imageView.layoutParams = imageParams
 
 
-            for (item in item) {
-                val imageView: ImageView = ImageView(context)
 
-                val imageParams: LayoutParams = LayoutParams(
-                    100,
-                    250
-                )
-                imageView.layoutParams = imageParams
-                imageView.setImageResource(item)
-                horizontalScroll.addView(imageView)
-            }
+        val button = view.findViewById<Button>(R.id.button)
+        button.setOnClickListener {
+
+            ((activity as MainActivity).databaseQuery())
+
         }
+
+
 
 
         return view
