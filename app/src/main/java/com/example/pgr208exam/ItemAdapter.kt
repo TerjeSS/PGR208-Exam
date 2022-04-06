@@ -1,33 +1,44 @@
 package com.example.pgr208exam
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.NonDisposableHandle.parent
-import java.util.*
+import com.bumptech.glide.Glide
+import com.example.pgr208exam.Fragments.ImageSearchFragment
 
-class ItemAdapter(dummyData: List<String>, imageClickListener: View.OnClickListener) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
-    val imageClickListener = imageClickListener;
+class ItemAdapter(
+    val dummyData: List<String>,
+    val context: Context
+) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
-    class ItemViewHolder(val view: View): RecyclerView.ViewHolder(view) {
-
+    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        var imageView: ImageView = itemView.findViewById<ImageView>(R.id.image_view)
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-    val view : View = LayoutInflater.from(parent.context).inflate(R.layout.inside_recycler, null)
-    return ItemViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    val itemView : View = LayoutInflater.from(parent.context).inflate(R.layout.inside_recycler, null)
+    return ViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.view.findViewById<ImageView>(R.id.iv_inside_rc).setOnClickListener(imageClickListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val imageUrl: String = dummyData[position]
+        var imageView = holder.imageView
+        Glide.with(context)
+            .load(imageUrl).into(imageView)
+        imageView.setOnClickListener {
+            run {
+                val intent = Intent(context, FullScreenImage().javaClass)
+                intent.putExtra("fullImageUrl", imageUrl)
+                context.startActivity(intent)
+            }
+        }
     }
-
     override fun getItemCount(): Int {
-        return 25;
+        return dummyData.size;
     }
 }

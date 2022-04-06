@@ -8,7 +8,16 @@ object Constants {
         return listOf(
             "https://tse4.mm.bing.net/th?id=OIP.FOS9rYzo09YtNzKqkkh0cgHaHa&pid=Api",
             "https://tse4.mm.bing.net/th?id=OIP.aVTxTgD2OEUio9Xdj3GA7gHaHa&pid=Api",
-            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api"
+            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api",
+            "https://tse2.mm.bing.net/th?id=OIP._dWjPm1jrP_0Dlx5a-O-zQHaJm&pid=Api",
+            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api",
+            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api",
+            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api",
+            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api",
+            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api",
+            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api",
+            "https://tse1.mm.bing.net/th?id=OIP.bhMQA-T7qOd-Bsm_tPY_zwHaHa&pid=Api",
+
         );
     }
 }
