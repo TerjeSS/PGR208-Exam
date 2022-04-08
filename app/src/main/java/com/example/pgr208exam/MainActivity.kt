@@ -1,13 +1,15 @@
 package com.example.pgr208exam
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.androidnetworking.AndroidNetworking
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.jacksonandroidnetworking.JacksonParserFactory
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,5 +28,11 @@ class MainActivity : AppCompatActivity() {
         //All the fragments
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.selectImageFragment, R.id.imageSearchFragment, R.id.savedResultsFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        //fast networking
+        AndroidNetworking.initialize(applicationContext);
+        AndroidNetworking.setParserFactory(JacksonParserFactory())
+
+
     }
 }
