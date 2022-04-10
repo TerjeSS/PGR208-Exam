@@ -79,7 +79,7 @@ class SelectImageFragment : Fragment() {
         selectImageView.setImageBitmap(selectedImage)
 
         //Adding elements after successfully adding image
-        selectTextView.text = "Okily Dokily, now you can upload!"
+        selectTextView.text = "Image is ready, now you can upload!"
         uploadButton.visibility = View.VISIBLE
 
 
