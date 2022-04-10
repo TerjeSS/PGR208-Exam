@@ -1,5 +1,7 @@
 package com.example.pgr208exam
 
+
+import android.os.Bundle
 import android.content.ContentValues
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -13,8 +15,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.androidnetworking.AndroidNetworking
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.ByteArrayOutputStream
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +48,10 @@ class MainActivity : AppCompatActivity() {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+
+        //fast networking
+        AndroidNetworking.initialize(applicationContext);
 
     }
 
@@ -75,5 +83,6 @@ class MainActivity : AppCompatActivity() {
         val bitmapData = stream.toByteArray()
 
         return bitmapData;
+
     }
 }
