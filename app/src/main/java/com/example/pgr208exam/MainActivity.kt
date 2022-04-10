@@ -8,7 +8,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.androidnetworking.AndroidNetworking
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.jacksonandroidnetworking.JacksonParserFactory
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
         //fast networking
         AndroidNetworking.initialize(applicationContext);
-        AndroidNetworking.setParserFactory(JacksonParserFactory())
 
 
     }
