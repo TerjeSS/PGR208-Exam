@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import android.widget.LinearLayout.LayoutParams
 import com.example.pgr208exam.MainActivity
 import com.example.pgr208exam.R
@@ -36,9 +34,17 @@ class SavedResultsFragment : Fragment() {
 
         linearLayout = view.findViewById(R.id.linearLayout)
 
-        val button = view.findViewById<Button>(R.id.button)
-        button.setOnClickListener {
-            ((activity as MainActivity).dummyData(R.drawable.three))
+        val spinner: Spinner = view.findViewById(R.id.sortSpinner)
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.sorting_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner.adapter = adapter
         }
 
 
