@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.logging.Level.INFO
 
 
@@ -58,14 +60,26 @@ class FullScreenImage : AppCompatActivity() {
 
         }
 
+        fun getDateTime(): String {
+            val calendar: Calendar
+            val dateFormat: SimpleDateFormat
+            val date: String
+
+            calendar = Calendar.getInstance()
+            dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+            date = dateFormat.format(calendar.time)
+            return date
+        }
+
         saveBtn.setOnClickListener {
             val bitmap = (fullImageView.drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             val result = stream.toByteArray();
 
-            dbHelper.writableDatabase.insert("newtable", null, ContentValues().apply {
+            dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
                 put("image", result)
+                put("date", getDateTime())
             })
 
         }
