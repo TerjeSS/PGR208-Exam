@@ -81,12 +81,9 @@ class SelectImageFragment : Fragment() {
         val selectedImage : Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
         selectImageView.setImageBitmap(selectedImage)
 
-
-
         //Adding elements after successfully adding image
         selectTextView.text = "Image is ready, now you can upload!"
         uploadButton.visibility = View.VISIBLE
-
 
         //Creating a jpeg-file of the bitmap and saving it on the device
         val filename = "selectedImage.jpeg"
