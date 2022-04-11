@@ -15,7 +15,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -78,12 +81,14 @@ class SelectImageFragment : Fragment() {
         val selectedImage : Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
         selectImageView.setImageBitmap(selectedImage)
 
+
+
         //Adding elements after successfully adding image
         selectTextView.text = "Image is ready, now you can upload!"
         uploadButton.visibility = View.VISIBLE
 
 
-        //Creating a jpeg-file of the bitmap and saving it one the device
+        //Creating a jpeg-file of the bitmap and saving it on the device
         val filename = "selectedImage.jpeg"
         val sd = Environment.getExternalStorageDirectory()
         val dest = File(sd, filename)
@@ -113,6 +118,11 @@ class SelectImageFragment : Fragment() {
                         Log.i("This is the OK code", okHttpResponse.toString())
                         Log.i("This is the response", response)
 
+                        //Sending result to ImageSearchFragment
+                        val result = response
+                        setFragmentResult("requestKey", bundleOf("data" to result))
+
+                        //Updating UI
                         selectTextView.text = "Image is uploaded 👍"
                         uploadButton.visibility = View.GONE
                     }
