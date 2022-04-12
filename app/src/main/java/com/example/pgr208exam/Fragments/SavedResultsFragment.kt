@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
+import androidx.core.graphics.scaleMatrix
 import androidx.core.view.get
 import com.example.pgr208exam.MainActivity
 import com.example.pgr208exam.R
@@ -51,7 +53,6 @@ class SavedResultsFragment : Fragment() {
         val sortingArray = resources.getStringArray(R.array.sorting_array)
         val orderCursor = ((activity as MainActivity).getImage("results", "orderThem"))
         val orderArray: MutableList<Int> = arrayListOf()
-
 
         while (orderCursor.moveToNext()) {
             val original = orderCursor.getInt(orderCursor.getColumnIndexOrThrow("original"))
@@ -124,6 +125,10 @@ class SavedResultsFragment : Fragment() {
                     )
                     imageView.layoutParams = imageParams
 
+                    imageView.setOnClickListener {
+
+                    }
+
                     imageView.setImageBitmap(item.image)
                     newLayout.addView(imageView)
 
@@ -153,9 +158,7 @@ class SavedResultsFragment : Fragment() {
                             newLinearLayout.addView(newImageView)
                         }
                     }
-
                 }
-
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
