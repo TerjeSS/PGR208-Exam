@@ -48,16 +48,9 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-
         //fast networking
         AndroidNetworking.initialize(applicationContext);
 
-    }
-
-    fun dummyData(x: Int) {
-        dbHelper.writableDatabase.insert("newtable", null, ContentValues().apply {
-            put("image", bitArray(x))
-        })
     }
 
     fun getImage(): ArrayList<Bitmap> {
@@ -66,7 +59,6 @@ class MainActivity : AppCompatActivity() {
             null, null, null, null, null, null)
 
         while (cursor.moveToNext()) {
-            val retrievedId = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
             val retrievedImage = cursor.getBlob(cursor.getColumnIndexOrThrow("image"))
             val image2: Bitmap = BitmapFactory.decodeByteArray(retrievedImage, 0, retrievedImage.size)
             bitmapArray.add(image2)
