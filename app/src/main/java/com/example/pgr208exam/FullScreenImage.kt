@@ -58,7 +58,7 @@ class FullScreenImage : AppCompatActivity() {
 
         fun getDateTime(): String {
             val calendar: Calendar = Calendar.getInstance()
-            val dateFormat: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+            val dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
             return dateFormat.format(calendar.time)
         }
 
@@ -76,7 +76,7 @@ class FullScreenImage : AppCompatActivity() {
             dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
                 put("image", result)
                 put("date", getDateTime())
-                put("original", 1)
+                put("original", 12)
             })
 
         }

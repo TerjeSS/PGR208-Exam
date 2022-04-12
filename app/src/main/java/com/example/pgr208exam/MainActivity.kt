@@ -12,7 +12,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.androidnetworking.AndroidNetworking
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.selects.select
 import java.io.ByteArrayOutputStream
 
 
@@ -21,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private var dbHelper = FeedReaderDbHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
 
 
         //onCreate for the main activity
@@ -52,16 +50,24 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getImage(table: String): Cursor {
+    fun getImage(table: String, order: String): Cursor {
         //var bitmapArray = arrayListOf<Bitmap>()
         val cursor: Cursor
-        cursor = dbHelper.writableDatabase.rawQuery("SELECT * FROM $table", null)
+        if (order == "Newest" && table == "originals") {
+            cursor =
+                dbHelper.writableDatabase.rawQuery("SELECT * FROM $table order by date desc", null)
+        } else if (order == "Oldest" && table == "originals") {
+            cursor =
+                dbHelper.writableDatabase.rawQuery("SELECT * FROM $table order by date asc", null)
+        } else if (table == "results" && order == "orderThem") {
+            cursor = dbHelper.writableDatabase.rawQuery(
+                "select original, count(*)" +
+                        " from results group by original order by 2 desc", null
+            )
+        } else {
+            cursor = dbHelper.writableDatabase.rawQuery("SELECT * FROM $table", null)
+        }
 
-        /*while (cursor.moveToNext()) {
-            val retrievedImage = cursor.getBlob(cursor.getColumnIndexOrThrow("image"))
-            val image2: Bitmap = BitmapFactory.decodeByteArray(retrievedImage, 0, retrievedImage.size)
-            bitmapArray.add(image2)
-        }*/
         return cursor
     }
 
@@ -70,9 +76,8 @@ class MainActivity : AppCompatActivity() {
         val stream = ByteArrayOutputStream()
         val bitmap = BitmapFactory.decodeResource(resources, x)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        val bitmapData = stream.toByteArray()
 
-        return bitmapData;
+        return stream.toByteArray();
 
     }
 }
