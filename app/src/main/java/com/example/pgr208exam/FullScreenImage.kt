@@ -1,15 +1,12 @@
 package com.example.pgr208exam
 
 import android.content.ContentValues
+import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.util.Log.INFO
-import android.util.Log.VERBOSE
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
@@ -18,7 +15,8 @@ import com.bumptech.glide.Glide
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.util.logging.Level.INFO
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class FullScreenImage : AppCompatActivity() {
@@ -29,10 +27,10 @@ class FullScreenImage : AppCompatActivity() {
         setContentView(R.layout.activity_full_screen_image)
 
         val fullImageUrl = intent.getStringExtra("fullImageUrl")
-        val fullImageView : ImageView = findViewById(R.id.fullImageView)
-        val downloadBtn : Button = findViewById(R.id.btn_download)
-        val saveBtn : Button = findViewById(R.id.btn_save)
-        var outputStream : OutputStream;
+        val fullImageView: ImageView = findViewById(R.id.fullImageView)
+        val downloadBtn: Button = findViewById(R.id.btn_download)
+        val saveBtn: Button = findViewById(R.id.btn_save)
+        var outputStream: OutputStream;
 
         var dbHelper = FeedReaderDbHelper(this)
 
@@ -58,14 +56,27 @@ class FullScreenImage : AppCompatActivity() {
 
         }
 
+        fun getDateTime(): String {
+            val calendar: Calendar = Calendar.getInstance()
+            val dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+            return dateFormat.format(calendar.time)
+        }
+
         saveBtn.setOnClickListener {
             val bitmap = (fullImageView.drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             val result = stream.toByteArray();
 
-            dbHelper.writableDatabase.insert("newtable", null, ContentValues().apply {
+            dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
                 put("image", result)
+                put("date", getDateTime())
+            })
+
+            dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
+                put("image", result)
+                put("date", getDateTime())
+                put("original", 12)
             })
 
         }

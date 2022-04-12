@@ -2,13 +2,9 @@ package com.example.pgr208exam
 
 
 import android.os.Bundle
-import android.content.ContentValues
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private var dbHelper = FeedReaderDbHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
 
         //onCreate for the main activity
         super.onCreate(savedInstanceState)
@@ -53,17 +50,25 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getImage(): ArrayList<Bitmap> {
-        var bitmapArray = arrayListOf<Bitmap>()
-        val cursor: Cursor = dbHelper.writableDatabase.query("newtable", arrayOf("id", "image"),
-            null, null, null, null, null, null)
-
-        while (cursor.moveToNext()) {
-            val retrievedImage = cursor.getBlob(cursor.getColumnIndexOrThrow("image"))
-            val image2: Bitmap = BitmapFactory.decodeByteArray(retrievedImage, 0, retrievedImage.size)
-            bitmapArray.add(image2)
+    fun getImage(table: String, order: String): Cursor {
+        //var bitmapArray = arrayListOf<Bitmap>()
+        val cursor: Cursor
+        if (order == "Newest" && table == "originals") {
+            cursor =
+                dbHelper.writableDatabase.rawQuery("SELECT * FROM $table order by date desc", null)
+        } else if (order == "Oldest" && table == "originals") {
+            cursor =
+                dbHelper.writableDatabase.rawQuery("SELECT * FROM $table order by date asc", null)
+        } else if (table == "results" && order == "orderThem") {
+            cursor = dbHelper.writableDatabase.rawQuery(
+                "select original, count(*)" +
+                        " from results group by original order by 2 desc", null
+            )
+        } else {
+            cursor = dbHelper.writableDatabase.rawQuery("SELECT * FROM $table", null)
         }
-        return bitmapArray
+
+        return cursor
     }
 
     fun bitArray(x: Int): ByteArray {
@@ -71,9 +76,8 @@ class MainActivity : AppCompatActivity() {
         val stream = ByteArrayOutputStream()
         val bitmap = BitmapFactory.decodeResource(resources, x)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        val bitmapData = stream.toByteArray()
 
-        return bitmapData;
+        return stream.toByteArray();
 
     }
 }
