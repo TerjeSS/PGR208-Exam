@@ -16,13 +16,14 @@ class ItemAdapter(
     val context: Context
 ) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imageView: ImageView = itemView.findViewById<ImageView>(R.id.image_view)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val itemView : View = LayoutInflater.from(parent.context).inflate(R.layout.inside_recycler, null)
-    return ViewHolder(itemView)
+        val itemView: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.inside_recycler, null)
+        return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -38,6 +39,7 @@ class ItemAdapter(
             }
         }
     }
+
     override fun getItemCount(): Int {
         return dummyData.size;
     }

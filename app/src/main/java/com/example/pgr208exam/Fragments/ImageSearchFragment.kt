@@ -39,15 +39,12 @@ class ImageSearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_image_search, container, false)
-        val recyclerView : RecyclerView = view.findViewById<RecyclerView>(R.id.rc_view)
+        val recyclerView: RecyclerView = view.findViewById<RecyclerView>(R.id.rc_view)
         recyclerView.layoutManager = GridLayoutManager(context, 3)
         recyclerView.adapter = ItemAdapter(dummyData, requireContext())
 
         return view;
     }
-
-
 }

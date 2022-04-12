@@ -59,19 +59,22 @@ class SavedResultsFragment : Fragment() {
         }
 
         spinner.onItemSelectedListener = object :
-        AdapterView.OnItemSelectedListener {
+            AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 val originalsArray: MutableList<OriginalImage> = arrayListOf()
                 val resultsArray: MutableList<ResultsImage> = arrayListOf()
 
                 linearLayout.removeAllViews();
 
-                val originalsCursor = ((activity as MainActivity).getImage("originals", sortingArray[pos]))
-                val resultsCursor = ((activity as MainActivity).getImage("results", sortingArray[pos]))
+                val originalsCursor =
+                    ((activity as MainActivity).getImage("originals", sortingArray[pos]))
+                val resultsCursor =
+                    ((activity as MainActivity).getImage("results", sortingArray[pos]))
 
                 while (originalsCursor.moveToNext()) {
                     val imageId = originalsCursor.getInt(0)
-                    val image: ByteArray = originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
+                    val image: ByteArray =
+                        originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
                     val date = originalsCursor.getString(2)
                     val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
                     if (sortingArray[pos] == "Collection size") {
@@ -82,7 +85,8 @@ class SavedResultsFragment : Fragment() {
                         }
 
                         if (orderArray.contains(imageId)) {
-                            originalsArray[orderArray.indexOf(imageId)] = OriginalImage(imageId, image2, date)
+                            originalsArray[orderArray.indexOf(imageId)] =
+                                OriginalImage(imageId, image2, date)
                         } else {
                             originalsArray += (OriginalImage(imageId, image2, date))
                         }
@@ -94,7 +98,8 @@ class SavedResultsFragment : Fragment() {
 
                 while (resultsCursor.moveToNext()) {
                     val imageId = resultsCursor.getInt(0)
-                    val image: ByteArray = resultsCursor.getBlob(resultsCursor.getColumnIndexOrThrow("image"))
+                    val image: ByteArray =
+                        resultsCursor.getBlob(resultsCursor.getColumnIndexOrThrow("image"))
                     val date = resultsCursor.getString(2)
                     val original = resultsCursor.getInt(3)
                     val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
@@ -137,10 +142,11 @@ class SavedResultsFragment : Fragment() {
                     for (newItem in resultsArray) {
                         if (newItem.original == item.id) {
                             val newImageView: ImageView = ImageView(context)
-                            val newImageParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-                                200,
-                                500
-                            )
+                            val newImageParams: LinearLayout.LayoutParams =
+                                LinearLayout.LayoutParams(
+                                    200,
+                                    500
+                                )
                             newImageView.layoutParams = newImageParams
 
                             newImageView.setImageBitmap(newItem.image)
@@ -151,6 +157,7 @@ class SavedResultsFragment : Fragment() {
                 }
 
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Another interface callback
             }

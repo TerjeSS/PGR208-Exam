@@ -69,8 +69,8 @@ class FullScreenImage : AppCompatActivity() {
             val result = stream.toByteArray();
 
             dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
-                    put("image", result)
-                    put("date", getDateTime())
+                put("image", result)
+                put("date", getDateTime())
             })
 
             dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
