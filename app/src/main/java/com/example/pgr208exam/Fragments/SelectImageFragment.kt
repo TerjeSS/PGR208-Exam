@@ -1,11 +1,8 @@
 package com.example.pgr208exam.Fragments
 
-import android.Manifest
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -21,17 +18,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -75,8 +65,6 @@ class SelectImageFragment : Fragment() {
             i.type = "*/*"
             i.action = Intent.ACTION_GET_CONTENT
             startForResult.launch(i)
-
-
         })
         return view
     }
@@ -102,132 +90,78 @@ class SelectImageFragment : Fragment() {
                     val intent = Intent()
                     intent.action = Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
                     startActivity(intent)
-
-    //Callback for getting image/url stored on the device
-    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if (it.resultCode == Activity.RESULT_OK)
-        imageUri = it.data?.data.toString()
-        Log.i("This is the image URI", imageUri)
-        val selectedImage : Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
-        selectImageView.setImageBitmap(selectedImage)
-
-        //Adding elements after successfully adding image
-        selectTextView.text = "Image is ready, now you can upload!"
-        uploadButton.visibility = View.VISIBLE
-
-        //Creating a jpeg-file of the bitmap and saving it on the device
-        val filename = "selectedImage.jpeg"
-        val sd = Environment.getExternalStorageDirectory()
-        val dest = File(sd, filename)
-        Log.i("This is the jpeg" , dest.absolutePath)
-
-        try {
-            val out = FileOutputStream(dest)
-            selectedImage.compress(Bitmap.CompressFormat.JPEG, 15, out)
-            out.flush()
-            out.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-
-        //OnClick to upload image to the server
-        uploadButton.setOnClickListener {
-            Log.i("Button click", "Upload button got clicked")
-            AndroidNetworking.upload("http://api-edu.gtl.ai/api/v1/imagesearch/upload")
-                .addMultipartFile("image", dest)
-                .addMultipartParameter("Content-Type", "image/jpeg")
-                .setTag("uploadTest")
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsOkHttpResponseAndString(object : OkHttpResponseAndStringRequestListener {
-                    override fun onResponse(okHttpResponse: Response, response: String) {
-                        Log.i("This is the OK code", okHttpResponse.toString())
-                        Log.i("This is the response", response)
-
-                        //Sending result to ImageSearchFragment
-                        val result = response
-                        setFragmentResult("requestKey", bundleOf("data" to result))
-
-                        //Updating UI
-                        selectTextView.text = "Image is uploaded 👍"
-                        uploadButton.visibility = View.GONE
-                    }
-                    override fun onError(anError: ANError) {
-                        Log.i( "This is the error", anError.errorBody)
-
                 }
             }
         }
     }
 
 
-    //Callback for getting image/url stored on the device
-    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            imageUri = it.data?.data.toString()
-            Log.i("This is the image URI", imageUri)
-            val selectedImage: Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
-            selectImageView.setImageBitmap(selectedImage)
+                    //Callback for getting image/url stored on the device
+                    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                        if (it.resultCode == Activity.RESULT_OK) {
+                            imageUri = it.data?.data.toString()
+                            Log.i("This is the image URI", imageUri)
+                            val selectedImage: Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
+                            selectImageView.setImageBitmap(selectedImage)
 
-            //Adding elements after successfully adding image
-            selectTextView.text = "Image is ready, now you can upload!"
-            uploadButton.visibility = View.VISIBLE
-
-
-            if (it.resultCode != Activity.RESULT_OK) {
-                selectTextView.text = "Something went wrong 🙄"
-            }
-
-            //Creating a jpeg-file of the bitmap and saving it on the device
-            val filename = "selectedImage.jpeg"
-            val sd = Environment.getExternalStorageDirectory()
-            val dest = File(sd, filename)
-            Log.i("This is the jpeg", dest.absolutePath)
-
-            try {
-                val out = FileOutputStream(dest)
-                selectedImage.compress(Bitmap.CompressFormat.JPEG, 15, out)
-                out.flush()
-                out.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+                            //Adding elements after successfully adding image
+                            selectTextView.text = "Image is ready, now you can upload!"
+                            uploadButton.visibility = View.VISIBLE
 
 
-            //OnClick to upload image to the server
-            uploadButton.setOnClickListener() {
+                            if (it.resultCode != Activity.RESULT_OK) {
+                                selectTextView.text = "Something went wrong 🙄"
+                            }
+
+                            //Creating a jpeg-file of the bitmap and saving it on the device
+                            val filename = "selectedImage.jpeg"
+                            val sd = Environment.getExternalStorageDirectory()
+                            val dest = File(sd, filename)
+                            Log.i("This is the jpeg", dest.absolutePath)
+
+                            try {
+                                val out = FileOutputStream(dest)
+                                selectedImage.compress(Bitmap.CompressFormat.JPEG, 15, out)
+                                out.flush()
+                                out.close()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
 
 
-                Log.i("Button click", "Upload button got clicked")
-                AndroidNetworking.upload("http://api-edu.gtl.ai/api/v1/imagesearch/upload")
-                    .addMultipartFile("image", dest)
-                    .addMultipartParameter("Content-Type", "image/jpeg")
-                    .setTag("uploadTest")
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsOkHttpResponseAndString(object : OkHttpResponseAndStringRequestListener {
-                        override fun onResponse(okHttpResponse: Response, response: String) {
-                            Log.i("This is the OK code", okHttpResponse.toString())
-                            Log.i("This is the response", response)
+                            //OnClick to upload image to the server
+                            uploadButton.setOnClickListener() {
 
-                            //Sending result to ImageSearchFragment
-                            val result = response
-                            setFragmentResult("requestKey", bundleOf("data" to result))
 
-                            //Updating UI
-                            selectTextView.text = "Image is uploaded 👍"
-                            uploadButton.visibility = View.GONE
+                                Log.i("Button click", "Upload button got clicked")
+                                AndroidNetworking.upload("http://api-edu.gtl.ai/api/v1/imagesearch/upload")
+                                    .addMultipartFile("image", dest)
+                                    .addMultipartParameter("Content-Type", "image/jpeg")
+                                    .setTag("uploadTest")
+                                    .setPriority(Priority.HIGH)
+                                    .build()
+                                    .getAsOkHttpResponseAndString(object : OkHttpResponseAndStringRequestListener {
+                                        override fun onResponse(okHttpResponse: Response, response: String) {
+                                            Log.i("This is the OK code", okHttpResponse.toString())
+                                            Log.i("This is the response", response)
+
+                                            //Sending result to ImageSearchFragment
+                                            val result = response
+                                            setFragmentResult("requestKey", bundleOf("data" to result))
+
+                                            //Updating UI
+                                            selectTextView.text = "Image is uploaded 👍"
+                                            uploadButton.visibility = View.GONE
+                                        }
+
+                                        override fun onError(anError: ANError) {
+                                            //Error handling when not uploading pics
+                                            uploadButton.visibility = View.GONE
+                                            selectTextView.text = "Could not send. Did you allow access to files?"
+                                            Log.i("This is the error", anError.errorBody)
+                                        }
+                                    })
+                            }
                         }
-
-                        override fun onError(anError: ANError) {
-                            //Error handling when not uploading pics
-                            uploadButton.visibility = View.GONE
-                            selectTextView.text = "Could not send. Did you allow access to files?"
-                            Log.i("This is the error", anError.errorBody)
-                        }
-                    })
-            }
-        }
-    }
-}
+                    }
+                }
