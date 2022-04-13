@@ -57,68 +57,92 @@ class SavedResultsFragment : Fragment() {
         }
 
         val sortingArray = resources.getStringArray(R.array.sorting_array)
-        val orderCursor = ((activity as MainActivity).getImage("results", "orderThem"))
+        val orderCursor = ((activity as MainActivity).getImage("resultsNumber"))
         val orderArray: MutableList<Int> = arrayListOf()
 
         while (orderCursor.moveToNext()) {
             val original = orderCursor.getInt(orderCursor.getColumnIndexOrThrow("original"))
             orderArray.add(original)
         }
+        val originalsCursor =
+            ((activity as MainActivity).getImage("originals"))
+        val resultsCursor =
+            ((activity as MainActivity).getImage("results"))
+
+        val originalsArrayNewest: MutableList<OriginalImage> = arrayListOf()
+        var originalsArrayOldest: MutableList<OriginalImage> = arrayListOf()
+        val originalsArraySize: MutableList<OriginalImage> = arrayListOf()
+        val resultsArray: MutableList<ResultsImage> = arrayListOf()
+
+        while (originalsCursor.moveToNext()) {
+            val imageId = originalsCursor.getInt(0)
+            val image: ByteArray =
+                originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
+            val date = originalsCursor.getString(2)
+            val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
+            originalsArrayNewest += (OriginalImage(imageId, image2, date))
+        }
+
+        originalsCursor.moveToFirst()
+
+        while (originalsCursor.moveToNext()) {
+            val imageId = originalsCursor.getInt(0)
+            val image: ByteArray =
+                originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
+            val date = originalsCursor.getString(2)
+            val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
+            originalsArrayOldest = (arrayListOf(OriginalImage(imageId, image2, date)) + originalsArrayOldest) as MutableList<OriginalImage>
+        }
+
+        originalsCursor.moveToFirst()
+
+        while (originalsCursor.moveToNext()) {
+            val imageId = originalsCursor.getInt(0)
+            val image: ByteArray =
+                originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
+            val date = originalsCursor.getString(2)
+            val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
+            for (item in orderArray) {
+                originalsArraySize += OriginalImage(-1, image2, "-1")
+            }
+
+            if (orderArray.contains(imageId)) {
+                originalsArraySize[orderArray.indexOf(imageId)] =
+                    OriginalImage(imageId, image2, date)
+            } else {
+                originalsArraySize += (OriginalImage(imageId, image2, date))
+            }
+        }
+
+        while (resultsCursor.moveToNext()) {
+            val imageId = resultsCursor.getInt(0)
+            val image: ByteArray =
+                resultsCursor.getBlob(resultsCursor.getColumnIndexOrThrow("image"))
+            val date = resultsCursor.getString(2)
+            val original = resultsCursor.getInt(3)
+            val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
+            resultsArray += ResultsImage(imageId, image2, date, original)
+        }
+
 
         spinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                val originalsArray: MutableList<OriginalImage> = arrayListOf()
-                val resultsArray: MutableList<ResultsImage> = arrayListOf()
 
                 linearLayout.removeAllViews();
 
-                val originalsCursor =
-                    ((activity as MainActivity).getImage("originals", sortingArray[pos]))
-                val resultsCursor =
-                    ((activity as MainActivity).getImage("results", sortingArray[pos]))
-
-                while (originalsCursor.moveToNext()) {
-                    val imageId = originalsCursor.getInt(0)
-                    val image: ByteArray =
-                        originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
-                    val date = originalsCursor.getString(2)
-                    val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-                    if (sortingArray[pos] == "Collection size") {
-                        if (originalsArray.isEmpty()) {
-                            for (item in orderArray) {
-                                originalsArray += OriginalImage(-1, image2, "-1")
-                            }
-                        }
-
-                        if (orderArray.contains(imageId)) {
-                            originalsArray[orderArray.indexOf(imageId)] =
-                                OriginalImage(imageId, image2, date)
-                        } else {
-                            originalsArray += (OriginalImage(imageId, image2, date))
-                        }
-                    } else {
-                        originalsArray += (OriginalImage(imageId, image2, date))
-                    }
-
+                var arrayToUse: MutableList<OriginalImage> = arrayListOf()
+                when (sortingArray[pos]) {
+                    "Newest" -> arrayToUse = originalsArrayNewest
+                    "Oldest" -> arrayToUse = originalsArrayOldest
+                    "Collection size" -> arrayToUse = originalsArraySize
                 }
 
-                while (resultsCursor.moveToNext()) {
-                    val imageId = resultsCursor.getInt(0)
-                    val image: ByteArray =
-                        resultsCursor.getBlob(resultsCursor.getColumnIndexOrThrow("image"))
-                    val date = resultsCursor.getString(2)
-                    val original = resultsCursor.getInt(3)
-                    val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-                    resultsArray += ResultsImage(imageId, image2, date, original)
-                }
-
-
-                for (item in originalsArray) {
+                for (item in arrayToUse) {
                     val newLayout: LinearLayout = LinearLayout(context)
                     val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        500,
+                        450,
                     )
                     newLayout.orientation = LinearLayout.HORIZONTAL
                     newLayout.layoutParams = params
@@ -126,15 +150,15 @@ class SavedResultsFragment : Fragment() {
 
                     val imageView: ImageView = ImageView(context)
                     val imageParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
-                        200,
-                        500
+                        250,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
                     )
                     imageView.layoutParams = imageParams
 
                     imageView.setOnClickListener {
                         val bitmap = imageView.drawable.toBitmap()
                         val stream = ByteArrayOutputStream()
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                         val byteArray = stream.toByteArray()
                         val intent = Intent(requireContext(), FullScreenImage().javaClass)
                         intent.putExtra("bitmapImage", byteArray)
@@ -161,8 +185,8 @@ class SavedResultsFragment : Fragment() {
                             val newImageView: ImageView = ImageView(context)
                             val newImageParams: LinearLayout.LayoutParams =
                                 LinearLayout.LayoutParams(
-                                    200,
-                                    500
+                                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                                    ViewGroup.LayoutParams.FILL_PARENT
                                 )
                             newImageView.layoutParams = newImageParams
 
