@@ -57,16 +57,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun getImage(table: String, order: String): Cursor {
+    fun getImage(table: String): Cursor {
         //var bitmapArray = arrayListOf<Bitmap>()
         val cursor: Cursor
-        if (order == "Newest" && table == "originals") {
-            cursor =
-                dbHelper.writableDatabase.rawQuery("SELECT * FROM $table order by date desc", null)
-        } else if (order == "Oldest" && table == "originals") {
-            cursor =
-                dbHelper.writableDatabase.rawQuery("SELECT * FROM $table order by date asc", null)
-        } else if (table == "results" && order == "orderThem") {
+        if (table == "resultsNumber") {
             cursor = dbHelper.writableDatabase.rawQuery(
                 "select original, count(*)" +
                         " from results group by original order by 2 desc", null
