@@ -15,8 +15,11 @@ import android.widget.*
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scaleMatrix
 import androidx.core.view.get
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pgr208exam.FullScreenImage
+import com.example.pgr208exam.HorizontalAdapter
 import com.example.pgr208exam.MainActivity
 import com.example.pgr208exam.R
 import java.io.ByteArrayOutputStream
@@ -152,6 +155,7 @@ class SavedResultsFragment : Fragment() {
                     val imageParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
                         250,
                         ViewGroup.LayoutParams.WRAP_CONTENT
+
                     )
                     imageView.layoutParams = imageParams
 
@@ -168,34 +172,44 @@ class SavedResultsFragment : Fragment() {
                     imageView.setImageBitmap(item.image)
                     newLayout.addView(imageView)
 
-                    val horizontalScrollLayout: HorizontalScrollView = HorizontalScrollView(context)
-                    val horizontalParams = LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
+                    val recyclerView: RecyclerView = RecyclerView(requireContext())
+                    val recyclerParams = RecyclerView.LayoutParams(
+                        RecyclerView.LayoutParams.MATCH_PARENT,
+                        RecyclerView.LayoutParams.WRAP_CONTENT
                     )
-                    horizontalScrollLayout.layoutParams = horizontalParams
-                    newLayout.addView(horizontalScrollLayout)
+                    recyclerView.layoutParams = recyclerParams
+                    recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    newLayout.addView(recyclerView)
 
-                    val newLinearLayout = LinearLayout(context)
-                    newLinearLayout.layoutParams = params
-                    horizontalScrollLayout.addView(newLinearLayout)
+                    val randomArray: ArrayList<ResultsImage> = arrayListOf()
 
                     for (newItem in resultsArray) {
                         if (newItem.original == item.id) {
-                            val newImageView: ImageView = ImageView(context)
+                            /*val newImageView: ImageView = ImageView(context)
                             val newImageParams: LinearLayout.LayoutParams =
                                 LinearLayout.LayoutParams(
-                                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                                    ViewGroup.LayoutParams.FILL_PARENT
+                                    250,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
                                 )
                             newImageView.layoutParams = newImageParams
+                            newImageView.setOnClickListener {
+                                val bitmap = newImageView.drawable.toBitmap()
+                                val stream = ByteArrayOutputStream()
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                                val byteArray = stream.toByteArray()
+                                val intent = Intent(requireContext(), FullScreenImage().javaClass)
+                                intent.putExtra("bitmapImage", byteArray)
+                                requireContext().startActivity(intent)
+                            }*/
 
-                            newImageView.setImageBitmap(newItem.image)
-                            newLinearLayout.addView(newImageView)
+                            randomArray += newItem
                         }
                     }
+                    recyclerView.adapter = HorizontalAdapter(randomArray, requireContext())
                 }
+
             }
+
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Another interface callback
