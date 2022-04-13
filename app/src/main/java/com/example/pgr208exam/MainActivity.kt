@@ -2,19 +2,17 @@ package com.example.pgr208exam
 
 
 import android.os.Bundle
-import android.content.ContentValues
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.androidnetworking.AndroidNetworking
+import com.example.pgr208exam.Fragments.ImageSearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.ByteArrayOutputStream
 
@@ -22,12 +20,17 @@ import java.io.ByteArrayOutputStream
 class MainActivity : AppCompatActivity() {
 
     private var dbHelper = FeedReaderDbHelper(this)
+    var resultList: ArrayList<String> = ArrayList<String>();
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //onCreate for the main activity
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+         var getReqResult: ArrayList<String>? = null;
 
         //FragmentManager and NavController for switching between fragments
         val navHostFragment =

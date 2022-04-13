@@ -17,27 +17,28 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.OkHttpResponseAndStringRequestListener
-import com.example.pgr208exam.BuildConfig
-import com.example.pgr208exam.R
-import com.example.pgr208exam.UriToBitmap
-import com.example.pgr208exam.getBitmap
+import com.example.pgr208exam.*
 import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
 
 
 class SelectImageFragment : Fragment() {
-
+    var listOfUrls: ArrayList<String> = ArrayList();
     lateinit var selectImageView: ImageView
     lateinit var imageUri: String
     lateinit var selectTextView: TextView
     lateinit var uploadButton: Button
+    private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +54,18 @@ class SelectImageFragment : Fragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.list.observe(viewLifecycleOwner) { listOfUrls }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
 
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_select_image, container, false)
@@ -116,19 +125,35 @@ class SelectImageFragment : Fragment() {
                         Log.i("This is the response", response)
 
                         //Sending result to ImageSearchFragment
+
                         val result = response
-                        setFragmentResult("requestKey", bundleOf("data" to result))
 
                         //Updating UI
-                        selectTextView.text = "Image is uploaded 👍"
+                        selectTextView.text = "Image is uploaded, please wait 👍"
                         uploadButton.visibility = View.GONE
+
+                        val res: ArrayList<String> =  getImages(result, uploadButton)
+                        setFragmentResult("requestKey", bundleOf("data" to res))
+                        uploadButton.visibility = View.VISIBLE;
+                        uploadButton.text = "Show images"
+
+                        uploadButton.setOnClickListener {
+                        viewModel.changeList(res)
+                            Log.i("test SelectImage", viewModel.getList().toString())
+
+                        }
+
+
+
                     }
                     override fun onError(anError: ANError) {
                         Log.i( "This is the error", anError.errorBody)
                 }
+
             })
         }
     }
+
 }
 
 
