@@ -5,18 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class SharedViewModel: ViewModel() {
-     var list: MutableLiveData<ArrayList<String>> = MutableLiveData();
-    var testString: String = "This is a test string";
+    var list: MutableLiveData<ArrayList<String>> = MutableLiveData();
+    private var responseFromPost: MutableLiveData<CharSequence> = MutableLiveData<CharSequence>()
 
-    fun changeString(input: String){
-
+    fun getResponseFromPost(): MutableLiveData<CharSequence> {
+        return responseFromPost
+    }
+    fun changeResponseFromPost(input: String) {
+        responseFromPost.value = input;
     }
 
-    fun changeList(input: ArrayList<String>){
+    fun changeList(input: ArrayList<String>) {
         list.value = input;
     }
+
     fun getList(): LiveData<ArrayList<String>> {
         return list
     }
-
 }

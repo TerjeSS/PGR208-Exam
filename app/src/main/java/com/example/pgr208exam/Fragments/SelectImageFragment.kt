@@ -15,13 +15,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -125,15 +120,15 @@ class SelectImageFragment : Fragment() {
                         Log.i("This is the response", response)
 
                         //Sending result to ImageSearchFragment
-
+                        viewModel.changeResponseFromPost(response);
                         val result = response
 
                         //Updating UI
-                        selectTextView.text = "Image is uploaded, please wait 👍"
+                        selectTextView.text = "Image is uploaded, 👍"
                         uploadButton.visibility = View.GONE
+                       // setFragmentResult("requestKey", bundleOf("data" to res))
 
-                        val res: ArrayList<String> =  getImages(result, uploadButton)
-                        setFragmentResult("requestKey", bundleOf("data" to res))
+                       /* val res: ArrayList<String> =  getImages(result, uploadButton)
                         uploadButton.visibility = View.VISIBLE;
                         uploadButton.text = "Show images"
 
@@ -141,7 +136,7 @@ class SelectImageFragment : Fragment() {
                         viewModel.changeList(res)
                             Log.i("test SelectImage", viewModel.getList().toString())
 
-                        }
+                        }*/
 
 
 
@@ -151,6 +146,10 @@ class SelectImageFragment : Fragment() {
                 }
 
             })
+
+
+
+
         }
     }
 
