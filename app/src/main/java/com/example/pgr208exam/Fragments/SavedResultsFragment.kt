@@ -136,8 +136,8 @@ class SavedResultsFragment : Fragment() {
 
                 var arrayToUse: MutableList<OriginalImage> = arrayListOf()
                 when (sortingArray[pos]) {
-                    "Newest" -> arrayToUse = originalsArrayNewest
-                    "Oldest" -> arrayToUse = originalsArrayOldest
+                    "Newest" -> arrayToUse = originalsArrayOldest
+                    "Oldest" -> arrayToUse = originalsArrayNewest
                     "Collection size" -> arrayToUse = originalsArraySize
                 }
 
