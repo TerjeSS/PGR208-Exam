@@ -146,10 +146,8 @@ class SelectImageFragment : Fragment() {
                                             Log.i("This is the OK code", okHttpResponse.toString())
                                             Log.i("This is the response", response)
 
-                                            //Sending result to ImageSearchFragment
-                                            val result = response
-                                            setFragmentResult("requestKey", bundleOf("data" to result))
 
+                                            viewModel.changeResponseFromPost(response)
                                             //Updating UI
                                             selectTextView.text = "Image is uploaded 👍"
                                             uploadButton.visibility = View.GONE

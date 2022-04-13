@@ -30,7 +30,7 @@ class ItemAdapter(
         val imageUrl: String = dummyData[position]
         var imageView = holder.imageView
         Glide.with(context).asBitmap()
-            .load(imageUrl).error(R.drawable.one).into(imageView)
+            .load(imageUrl).into(imageView)
         imageView.setOnClickListener {
             run {
                 val intent = Intent(context, FullScreenImage().javaClass)
