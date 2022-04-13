@@ -119,27 +119,9 @@ class SelectImageFragment : Fragment() {
                         Log.i("This is the OK code", okHttpResponse.toString())
                         Log.i("This is the response", response)
 
-                        //Sending result to ImageSearchFragment
-                        viewModel.changeResponseFromPost(response);
-                        val result = response
-
                         //Updating UI
                         selectTextView.text = "Image is uploaded, 👍"
                         uploadButton.visibility = View.GONE
-                       // setFragmentResult("requestKey", bundleOf("data" to res))
-
-                       /* val res: ArrayList<String> =  getImages(result, uploadButton)
-                        uploadButton.visibility = View.VISIBLE;
-                        uploadButton.text = "Show images"
-
-                        uploadButton.setOnClickListener {
-                        viewModel.changeList(res)
-                            Log.i("test SelectImage", viewModel.getList().toString())
-
-                        }*/
-
-
-
                     }
                     override fun onError(anError: ANError) {
                         Log.i( "This is the error", anError.errorBody)

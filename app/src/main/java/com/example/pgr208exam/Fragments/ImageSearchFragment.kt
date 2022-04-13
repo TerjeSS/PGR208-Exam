@@ -60,6 +60,8 @@ class ImageSearchFragment() : Fragment() {
 
         if(!url.startsWith("http")){
             Toast.makeText(requireContext(), "No image uploaded to server", Toast.LENGTH_LONG).show();
+            view.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = GONE;
+            view.findViewById<TextView>(R.id.loadingTextView).text = "Please upload a picture to see the results"
         }
         else {
 
