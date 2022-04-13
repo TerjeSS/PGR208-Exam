@@ -1,8 +1,10 @@
 package com.example.pgr208exam.Fragments
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,10 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scaleMatrix
 import androidx.core.view.get
+import com.bumptech.glide.Glide
+import com.example.pgr208exam.FullScreenImage
 import com.example.pgr208exam.MainActivity
 import com.example.pgr208exam.R
+import java.io.ByteArrayOutputStream
 
 class SavedResultsFragment : Fragment() {
 
@@ -126,7 +132,13 @@ class SavedResultsFragment : Fragment() {
                     imageView.layoutParams = imageParams
 
                     imageView.setOnClickListener {
-
+                        val bitmap = imageView.drawable.toBitmap()
+                        val stream = ByteArrayOutputStream()
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
+                        val byteArray = stream.toByteArray()
+                        val intent = Intent(requireContext(), FullScreenImage().javaClass)
+                        intent.putExtra("bitmapImage", byteArray)
+                        requireContext().startActivity(intent)
                     }
 
                     imageView.setImageBitmap(item.image)

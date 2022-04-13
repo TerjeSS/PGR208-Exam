@@ -3,6 +3,7 @@ package com.example.pgr208exam
 import android.content.ContentValues
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -27,6 +28,7 @@ class FullScreenImage : AppCompatActivity() {
         setContentView(R.layout.activity_full_screen_image)
 
         val fullImageUrl = intent.getStringExtra("fullImageUrl")
+        val byteArrayImage = intent.getByteArrayExtra("bitmapImage")
         val fullImageView: ImageView = findViewById(R.id.fullImageView)
         val downloadBtn: Button = findViewById(R.id.btn_download)
         val saveBtn: Button = findViewById(R.id.btn_save)
@@ -84,7 +86,11 @@ class FullScreenImage : AppCompatActivity() {
 
 
 
-
-        Glide.with(this).load(fullImageUrl).into(fullImageView)
+        if (byteArrayImage == null) {
+            Glide.with(this).load(fullImageUrl).into(fullImageView)
+        } else {
+            val bitmapImage = BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage!!.size)
+            Glide.with(this).load(bitmapImage).into(fullImageView)
+        }
     }
 }
