@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pgr208exam.Fragments.ImageSearchFragment
@@ -25,12 +26,11 @@ class ItemAdapter(
             LayoutInflater.from(parent.context).inflate(R.layout.inside_recycler, null)
         return ViewHolder(itemView)
     }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imageUrl: String = dummyData[position]
         var imageView = holder.imageView
-        Glide.with(context)
-            .load(imageUrl).into(imageView)
+        Glide.with(context).asBitmap()
+            .load(imageUrl).error(R.drawable.one).into(imageView)
         imageView.setOnClickListener {
             run {
                 val intent = Intent(context, FullScreenImage().javaClass)

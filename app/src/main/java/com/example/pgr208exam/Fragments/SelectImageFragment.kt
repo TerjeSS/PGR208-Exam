@@ -18,29 +18,27 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.fragment.app.activityViewModels
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.OkHttpResponseAndStringRequestListener
-import com.example.pgr208exam.BuildConfig
-import com.example.pgr208exam.R
-import com.example.pgr208exam.UriToBitmap
-import com.example.pgr208exam.getBitmap
+import com.example.pgr208exam.*
 import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
 
 
 class SelectImageFragment : Fragment() {
-
+    var listOfUrls: ArrayList<String> = ArrayList();
     lateinit var selectImageView: ImageView
     lateinit var imageUri: String
     lateinit var selectTextView: TextView
     lateinit var uploadButton: Button
+    private val viewModel: SharedViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +50,9 @@ class SelectImageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_select_image, container, false)
         selectImageView = view.findViewById(R.id.imageview_select_image)
