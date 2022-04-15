@@ -56,6 +56,7 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 
     //Image cropper
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    implementation 'com.edmodo:cropper:1.0.1'
+
 
 }

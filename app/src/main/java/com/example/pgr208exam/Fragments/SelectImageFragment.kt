@@ -15,9 +15,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.set
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -26,6 +26,7 @@ import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
 import com.androidnetworking.interfaces.OkHttpResponseAndStringRequestListener
+import com.edmodo.cropper.CropImageView
 import com.example.pgr208exam.BuildConfig
 import com.example.pgr208exam.R
 import com.example.pgr208exam.UriToBitmap
@@ -37,16 +38,20 @@ import java.io.FileOutputStream
 
 class SelectImageFragment : Fragment() {
 
-    lateinit var selectImageView: ImageView
+    lateinit var selectImageView: CropImageView
     lateinit var imageUri: String
     lateinit var selectTextView: TextView
+    lateinit var cropButton: Button
     lateinit var uploadButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
+
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,12 +63,23 @@ class SelectImageFragment : Fragment() {
         selectTextView = view.findViewById(R.id.textview_select_image)
         uploadButton = view.findViewById(R.id.upload_button)
 
-        selectImageView.setOnClickListener(View.OnClickListener {
+
+/*
+        cropButton.setOnClickListener(View.OnClickListener {
+            //CropImage
+            requestPermission()
+            cropResultLauncher.launch(selectImageView.drawable)
+            uploadButton.text = "upload"
+        })
+*/
+
+        uploadButton.setOnClickListener(View.OnClickListener {
             //Ask the user for access to manage all files on the device
             requestPermission()
             val i = Intent()
-            i.type = "*/*"
+            i.type = "image/*"
             i.action = Intent.ACTION_GET_CONTENT
+            uploadButton.text = "upload"
             startForResult.launch(i)
         })
         return view
@@ -102,10 +118,11 @@ class SelectImageFragment : Fragment() {
             imageUri = it.data?.data.toString()
             Log.i("This is the image URI", imageUri)
             val selectedImage: Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
+           // val selectedImage: Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
             selectImageView.setImageBitmap(selectedImage)
 
             //Adding elements after successfully adding image
-            selectTextView.text = "Image is ready, now you can upload!"
+            selectTextView.text = "Image is ready, now you can crop!"
             uploadButton.visibility = View.VISIBLE
 
 
@@ -113,25 +130,32 @@ class SelectImageFragment : Fragment() {
                 selectTextView.text = "Something went wrong 🙄"
             }
 
-            //Creating a jpeg-file of the bitmap and saving it on the device
-            val filename = "selectedImage.jpeg"
-            val sd = Environment.getExternalStorageDirectory()
-            val dest = File(sd, filename)
-            Log.i("This is the jpeg", dest.absolutePath)
 
-            try {
-                val out = FileOutputStream(dest)
-                selectedImage.compress(Bitmap.CompressFormat.JPEG, 15, out)
-                out.flush()
-                out.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-
-            //OnClick to upload image to the server
+            //OnClick to crop and upload to the server
             uploadButton.setOnClickListener() {
+                //Bitmap of cropped image
+                val croppedBitmap : Bitmap = selectImageView.croppedImage
+                selectImageView.setImageBitmap(croppedBitmap)
+                selectImageView.setFixedAspectRatio(true)
 
+
+
+                //Creating a jpeg-file of the bitmap and saving it on the device
+                val filename = "selectedImage.jpeg"
+                val sd = Environment.getExternalStorageDirectory()
+                val dest = File(sd, filename)
+                Log.i("This is the jpeg", dest.absolutePath)
+
+                try {
+                    val out = FileOutputStream(dest)
+                    croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 15, out)
+                    out.flush()
+                    out.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                //Upload
 
                 Log.i("Button click", "Upload button got clicked")
                 AndroidNetworking.upload("http://api-edu.gtl.ai/api/v1/imagesearch/upload")
@@ -165,3 +189,4 @@ class SelectImageFragment : Fragment() {
         }
     }
 }
+
