@@ -25,6 +25,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.fragment.app.activityViewModels
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
 import com.androidnetworking.error.ANError
@@ -34,13 +38,14 @@ import com.example.pgr208exam.BuildConfig
 import com.example.pgr208exam.R
 import com.example.pgr208exam.UriToBitmap
 import com.example.pgr208exam.getBitmap
+import com.example.pgr208exam.*
 import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
 
 
 class SelectImageFragment : Fragment() {
-
+    var listOfUrls: ArrayList<String> = ArrayList();
     lateinit var selectImageView: CropImageView
     lateinit var imageUri: String
     lateinit var selectTextView: TextView
@@ -180,9 +185,9 @@ class SelectImageFragment : Fragment() {
                             Log.i("This is the response", response)
 
                             //Sending result to ImageSearchFragment
-                            val result = response
-                            setFragmentResult("requestKey", bundleOf("data" to result))
-
+                            val result = response                  
+                            viewModel.changeResponseFromPost(response)
+                            
                             //Updating UI
                             selectTextView.text = "Image is uploaded 👍"
                             rotateLeftButton.visibility = View.GONE
@@ -213,5 +218,3 @@ class SelectImageFragment : Fragment() {
             }
         }
     }
-}
-
