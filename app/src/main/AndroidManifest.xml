@@ -18,7 +18,10 @@
 
         <activity
             android:name=".FullScreenImage"
-            android:exported="false" />
+            android:exported="false"
+            />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -7,12 +7,42 @@
     tools:context=".Fragments.SelectImageFragment">
 
 
-    <ImageView
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageview_select_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/rotate_left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="⬅️Rotate left "
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/rotate_right_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="Rotate right ➡️" />
+
+    </LinearLayout>
+
+
+
+    <com.edmodo.cropper.CropImageView
         android:id="@+id/imageview_select_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/ic_select_image"
-        android:clickable="false"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="16:9"
+        android:background="@drawable/icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -27,7 +57,7 @@
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="150dp"
         android:textColor="@color/black"
-        android:text="Click above to select image to upload 👆"
+        android:text="Start to select image to upload"
         android:paddingBottom="20dp"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,12 +73,12 @@
         android:layout_marginStart="150dp"
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="109dp"
-        android:text="Upload"
+        android:text="Select image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_select_image"
-        android:visibility="invisible"
+        android:visibility="visible"
         />
 
 
