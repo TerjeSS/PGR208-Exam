@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.rotationMatrix
 import androidx.core.graphics.scale
+import androidx.core.graphics.scaleMatrix
 import androidx.core.graphics.set
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -188,11 +189,23 @@ class SelectImageFragment : Fragment() {
                             rotateRightButton.visibility = View.GONE
                             uploadButton.visibility = View.GONE
                             selectImageView.setGuidelines(0)
+                            selectImageView.imageResource = android.R.color.transparent
+                            selectImageView.setBackgroundResource(R.drawable.icon)
+
+                            //animation on icon
+                            selectImageView.animate().apply {
+                                duration = 2000
+                                rotationY(720f)
+                                scaleXBy(-0.4F)
+                                scaleYBy(-0.4F)
+                            }.start()
                         }
 
                         override fun onError(anError: ANError) {
                             //Error handling when not uploading pics
                             uploadButton.visibility = View.GONE
+                            rotateLeftButton.visibility = View.GONE
+                            rotateRightButton.visibility = View.GONE
                             selectTextView.text = "Could not send. Did you allow access to files?"
                             Log.i("This is the error", anError.errorBody)
                         }
