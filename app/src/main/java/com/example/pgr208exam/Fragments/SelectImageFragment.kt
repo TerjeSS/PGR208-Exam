@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.rotationMatrix
 import androidx.core.graphics.set
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -41,7 +42,6 @@ class SelectImageFragment : Fragment() {
     lateinit var selectImageView: CropImageView
     lateinit var imageUri: String
     lateinit var selectTextView: TextView
-    lateinit var cropButton: Button
     lateinit var uploadButton: Button
 
 
@@ -49,7 +49,6 @@ class SelectImageFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
-
     }
 
 
@@ -63,15 +62,15 @@ class SelectImageFragment : Fragment() {
         selectTextView = view.findViewById(R.id.textview_select_image)
         uploadButton = view.findViewById(R.id.upload_button)
 
+        //animation on icon
+        selectImageView.animate().apply {
+            duration = 3000
+            scaleX(0.6F)
+            scaleY(0.6F)
+            rotationX(1080f)
+        }.start()
 
-/*
-        cropButton.setOnClickListener(View.OnClickListener {
-            //CropImage
-            requestPermission()
-            cropResultLauncher.launch(selectImageView.drawable)
-            uploadButton.text = "upload"
-        })
-*/
+
 
         uploadButton.setOnClickListener(View.OnClickListener {
             //Ask the user for access to manage all files on the device
@@ -118,12 +117,13 @@ class SelectImageFragment : Fragment() {
             imageUri = it.data?.data.toString()
             Log.i("This is the image URI", imageUri)
             val selectedImage: Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
-           // val selectedImage: Bitmap = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
             selectImageView.setImageBitmap(selectedImage)
 
             //Adding elements after successfully adding image
-            selectTextView.text = "Image is ready, now you can crop!"
+            selectTextView.text = "Image is ready, now you can crop it "
             uploadButton.visibility = View.VISIBLE
+            selectImageView.setBackgroundResource(android.R.color.transparent);
+
 
 
             if (it.resultCode != Activity.RESULT_OK) {
@@ -135,9 +135,7 @@ class SelectImageFragment : Fragment() {
             uploadButton.setOnClickListener() {
                 //Bitmap of cropped image
                 val croppedBitmap : Bitmap = selectImageView.croppedImage
-                selectImageView.setImageBitmap(croppedBitmap)
-                selectImageView.setFixedAspectRatio(true)
-
+                selectImageView.setBackgroundResource(R.drawable.ic_image_search)
 
 
                 //Creating a jpeg-file of the bitmap and saving it on the device
@@ -156,7 +154,6 @@ class SelectImageFragment : Fragment() {
                 }
 
                 //Upload
-
                 Log.i("Button click", "Upload button got clicked")
                 AndroidNetworking.upload("http://api-edu.gtl.ai/api/v1/imagesearch/upload")
                     .addMultipartFile("image", dest)

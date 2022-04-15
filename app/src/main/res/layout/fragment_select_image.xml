@@ -7,18 +7,18 @@
     tools:context=".Fragments.SelectImageFragment">
 
 
-
     <com.edmodo.cropper.CropImageView
         android:id="@+id/imageview_select_image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="16:9"
-        android:src="@drawable/ic_select_image"
+        android:background="@drawable/icon"
+        app:guidelines="onTouch"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textview_select_image"
@@ -29,7 +29,7 @@
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="150dp"
         android:textColor="@color/black"
-        android:text=""
+        android:text="Start to select image to upload"
         android:paddingBottom="20dp"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
