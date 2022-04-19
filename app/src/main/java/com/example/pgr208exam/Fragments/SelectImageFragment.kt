@@ -1,6 +1,7 @@
 package com.example.pgr208exam.Fragments
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -17,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.contentValuesOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
@@ -40,7 +42,6 @@ class SelectImageFragment : Fragment() {
     lateinit var rotateLeftButton: Button
     lateinit var rotateRightButton: Button
     private val viewModel: SharedViewModel by activityViewModels()
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -144,6 +145,10 @@ class SelectImageFragment : Fragment() {
                     //Bitmap of cropped image
                     val croppedBitmap: Bitmap = selectImageView.croppedImage
                     selectImageView.setImageBitmap(croppedBitmap)
+                    /*val dbHelper = FeedReaderDbHelper(requireContext())
+                    dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
+                        put("image", (activity as MainActivity).bitArray(croppedBitmap))
+                    })*/
 
 
                     //Creating a jpeg-file of the bitmap and saving it on the device

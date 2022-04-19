@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper
 class FeedReaderDbHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("create table originals (id integer primary key autoincrement not null, image blob, date tinytext)")
-        db.execSQL("create table results (id integer primary key autoincrement not null, image blob, date tinytext, original integer, foreign key(original) references originals(id))")
+        db.execSQL("create table originals (id integer primary key autoincrement not null, image blob)")
+        db.execSQL("create table results (id integer primary key autoincrement not null, image blob, original integer, foreign key(original) references originals(id))")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

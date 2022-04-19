@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
+        //deleteUnused()
         //onCreate for the main activity
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -50,6 +50,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun saveUpload() {
+
+    }
+
+    fun deleteUnused() {
+        dbHelper.writableDatabase.delete("originals", "id NOT IN(SELECT original FROM results)",null)
+        dbHelper.writableDatabase.delete("results", "original NOT IN (SELECT id FROM originals)", null)
+    }
+
     fun getImage(table: String): Cursor {
         //var bitmapArray = arrayListOf<Bitmap>()
         val cursor: Cursor
@@ -65,11 +74,10 @@ class MainActivity : AppCompatActivity() {
         return cursor
     }
 
-    fun bitArray(x: Int): ByteArray {
+    fun bitArray(x: Bitmap): ByteArray {
         //Convert image to bitArray
         val stream = ByteArrayOutputStream()
-        val bitmap = BitmapFactory.decodeResource(resources, x)
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        x.compress(Bitmap.CompressFormat.PNG, 100, stream)
 
         return stream.toByteArray();
 

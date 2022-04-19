@@ -193,41 +193,28 @@ class SavedResultsFragment : Fragment() {
             val image: ByteArray =
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            originalsArrayNewest += (OriginalImage(imageId, image2))
+            originalsArrayNewest += OriginalImage(imageId, image2)
         }
-
-        originalsCursor.moveToLast()
 
         while (originalsCursor.moveToPrevious()) {
             val imageId = originalsCursor.getInt(0)
             val image: ByteArray =
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            originalsArrayOldest += (arrayListOf(
-                OriginalImage(
-                    imageId,
-                    image2
-                )
-            ))
+            originalsArrayOldest += OriginalImage(imageId, image2)
         }
-
-        originalsCursor.moveToFirst()
 
         while (originalsCursor.moveToNext()) {
             val imageId = originalsCursor.getInt(0)
             val image: ByteArray =
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            for (item in orderArray) {
-                originalsArraySize += OriginalImage(-1, image2)
+            for ((index, item) in orderArray.withIndex()) {
+                if (imageId == item) {
+                    originalsArraySize += OriginalImage(imageId, image2)
+                }
             }
 
-            if (orderArray.contains(imageId)) {
-                originalsArraySize[orderArray.indexOf(imageId)] =
-                    OriginalImage(imageId, image2)
-            } else {
-                originalsArraySize += (OriginalImage(imageId, image2))
-            }
         }
 
         while (resultsCursor.moveToNext()) {
