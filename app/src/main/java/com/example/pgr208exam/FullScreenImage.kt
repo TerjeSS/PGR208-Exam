@@ -8,10 +8,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -22,11 +24,9 @@ import java.util.*
 
 class FullScreenImage : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_image)
-
         val fullImageUrl = intent.getStringExtra("fullImageUrl")
         val byteArrayImage = intent.getByteArrayExtra("bitmapImage")
         val fullImageView: ImageView = findViewById(R.id.fullImageView)
@@ -65,6 +65,7 @@ class FullScreenImage : AppCompatActivity() {
             val stream = ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             val result = stream.toByteArray();
+
 
             dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
                 put("image", result)

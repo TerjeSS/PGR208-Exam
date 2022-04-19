@@ -6,18 +6,56 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/loadingTextView"
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="Pick a search-engine">
+
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Images are being loaded from server" />
+            android:layout_margin="20dp"
+            android:tag="google"
+            android:text="Google" />
+
+        <Button
+            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bing" />
+
+        <Button
+            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tineye" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/loadingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Images are being loaded from server" />
+
     <RelativeLayout
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="match_parent"
-        >
+        android:gravity="center">
 
         <ProgressBar
             android:layout_width="wrap_content"

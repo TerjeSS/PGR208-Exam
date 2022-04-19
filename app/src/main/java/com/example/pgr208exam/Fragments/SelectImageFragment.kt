@@ -144,6 +144,8 @@ class SelectImageFragment : Fragment() {
                     //Bitmap of cropped image
                     val croppedBitmap: Bitmap = selectImageView.croppedImage
                     selectImageView.setImageBitmap(croppedBitmap)
+                    viewModel.setOriginalImage(croppedBitmap)
+
 
 
                     //Creating a jpeg-file of the bitmap and saving it on the device
