@@ -56,4 +56,8 @@ dependencies {
     //Fast Android Networking
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 
+    //Image cropper
+    implementation 'com.edmodo:cropper:1.0.1'
+
+
 }
