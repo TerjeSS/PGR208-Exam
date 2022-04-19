@@ -7,8 +7,8 @@
     >
 
     <androidx.cardview.widget.CardView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="110dp"
+        android:layout_height="180dp"
         app:cardCornerRadius="7dp"
         android:elevation="34dp"
         android:id="@+id/image_card">
@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:id="@+id/image_view"
             android:layout_gravity="center"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             android:src="@drawable/download"
             />
     </androidx.cardview.widget.CardView>
