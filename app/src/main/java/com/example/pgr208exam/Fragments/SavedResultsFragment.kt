@@ -223,7 +223,7 @@ class SavedResultsFragment : Fragment() {
             val imageId = resultsCursor.getInt(0)
             val image: ByteArray =
                 resultsCursor.getBlob(resultsCursor.getColumnIndexOrThrow("image"))
-            val original = resultsCursor.getInt(3)
+            val original = resultsCursor.getInt(2)
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
             resultsArray += ResultsImage(imageId, image2, original)
         }
