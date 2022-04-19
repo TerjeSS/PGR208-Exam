@@ -8,6 +8,8 @@ class SharedViewModel: ViewModel() {
     var list: MutableLiveData<ArrayList<String>> = MutableLiveData();
     private var responseFromPost: MutableLiveData<CharSequence> = MutableLiveData<CharSequence>()
 
+
+    //Getter and setter for the response from POST request
     fun getResponseFromPost(): MutableLiveData<CharSequence> {
         return responseFromPost
     }
@@ -15,6 +17,8 @@ class SharedViewModel: ViewModel() {
         responseFromPost.value = input;
     }
 
+
+    //Getter and setter for the list of strings
     fun changeList(input: ArrayList<String>) {
         list.value = input;
     }
