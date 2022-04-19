@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //deleteUnused()
+        deleteUnused()
         //onCreate for the main activity
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -50,13 +50,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun saveUpload() {
-
-    }
-
     fun deleteUnused() {
-        dbHelper.writableDatabase.delete("originals", "id NOT IN(SELECT original FROM results)",null)
-        dbHelper.writableDatabase.delete("results", "original NOT IN (SELECT id FROM originals)", null)
+        dbHelper.writableDatabase.delete(
+            "originals",
+            "id NOT IN(SELECT original FROM results)",
+            null
+        )
+        dbHelper.writableDatabase.delete(
+            "results",
+            "original NOT IN (SELECT id FROM originals)",
+            null
+        )
     }
 
     fun getImage(table: String): Cursor {
@@ -80,6 +84,5 @@ class MainActivity : AppCompatActivity() {
         x.compress(Bitmap.CompressFormat.PNG, 100, stream)
 
         return stream.toByteArray();
-
     }
 }

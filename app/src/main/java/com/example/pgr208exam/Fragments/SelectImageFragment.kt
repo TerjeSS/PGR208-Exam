@@ -145,10 +145,10 @@ class SelectImageFragment : Fragment() {
                     //Bitmap of cropped image
                     val croppedBitmap: Bitmap = selectImageView.croppedImage
                     selectImageView.setImageBitmap(croppedBitmap)
-                    /*val dbHelper = FeedReaderDbHelper(requireContext())
+                    val dbHelper = FeedReaderDbHelper(requireContext())
                     dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
                         put("image", (activity as MainActivity).bitArray(croppedBitmap))
-                    })*/
+                    })
 
 
                     //Creating a jpeg-file of the bitmap and saving it on the device

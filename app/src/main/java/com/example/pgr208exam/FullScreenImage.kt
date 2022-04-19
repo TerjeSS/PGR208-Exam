@@ -66,13 +66,15 @@ class FullScreenImage : AppCompatActivity() {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             val result = stream.toByteArray();
 
-            dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
-                put("image", result)
-            })
+            val cursor: Cursor = dbHelper.writableDatabase.rawQuery("SELECT MAX(id) FROM originals", null)
+            var originalId: Int = -1
+            while (cursor.moveToNext()) {
+                originalId = cursor.getInt(0)
+            }
 
             dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
                 put("image", result)
-                put("original", 12)
+                put("original", originalId)
             })
 
         }
