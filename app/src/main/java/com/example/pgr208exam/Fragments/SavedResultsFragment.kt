@@ -194,7 +194,10 @@ class SavedResultsFragment : Fragment() {
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
             originalsArrayNewest += OriginalImage(imageId, image2)
+            originalsArraySize += OriginalImage(imageId, image2)
         }
+        val originalsArraySizeTmp: MutableList<OriginalImage> = arrayListOf()
+
 
         while (originalsCursor.moveToPrevious()) {
             val imageId = originalsCursor.getInt(0)
@@ -204,17 +207,16 @@ class SavedResultsFragment : Fragment() {
             originalsArrayOldest += OriginalImage(imageId, image2)
         }
 
-        while (originalsCursor.moveToNext()) {
-            val imageId = originalsCursor.getInt(0)
-            val image: ByteArray =
-                originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
-            val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            for ((index, item) in orderArray.withIndex()) {
-                if (imageId == item) {
-                    originalsArraySize += OriginalImage(imageId, image2)
+        for (item in originalsArraySize) {
+            originalsArraySizeTmp += item
+        }
+        for ((index, item) in orderArray.withIndex()) {
+            loop@ for (otherItem in originalsArraySizeTmp) {
+                if (otherItem.id == item) {
+                    originalsArraySize[index] = otherItem
+                    break@loop
                 }
             }
-
         }
 
         while (resultsCursor.moveToNext()) {
