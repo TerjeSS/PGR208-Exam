@@ -58,11 +58,7 @@ class FullScreenImage : AppCompatActivity() {
 
         }
 
-        fun getDateTime(): String {
-            val calendar: Calendar = Calendar.getInstance()
-            val dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-            return dateFormat.format(calendar.time)
-        }
+
 
         saveBtn.setOnClickListener {
             val bitmap = (fullImageView.drawable as BitmapDrawable).bitmap
@@ -72,12 +68,10 @@ class FullScreenImage : AppCompatActivity() {
 
             dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
                 put("image", result)
-                put("date", getDateTime())
             })
 
             dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
                 put("image", result)
-                put("date", getDateTime())
                 put("original", 12)
             })
 
