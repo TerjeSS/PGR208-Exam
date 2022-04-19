@@ -26,8 +26,8 @@ import java.io.ByteArrayOutputStream
 
 class SavedResultsFragment : Fragment() {
 
-    data class OriginalImage(val id: Int, val image: Bitmap, val date: String)
-    data class ResultsImage(val id: Int, val image: Bitmap, val date: String, val original: Int)
+    data class OriginalImage(val id: Int, val image: Bitmap)
+    data class ResultsImage(val id: Int, val image: Bitmap, val original: Int)
 
     lateinit var linearLayout: LinearLayout
 
@@ -81,9 +81,8 @@ class SavedResultsFragment : Fragment() {
             val imageId = originalsCursor.getInt(0)
             val image: ByteArray =
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
-            val date = originalsCursor.getString(2)
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            originalsArrayNewest += (OriginalImage(imageId, image2, date))
+            originalsArrayNewest += (OriginalImage(imageId, image2))
         }
 
         originalsCursor.moveToFirst()
@@ -92,9 +91,8 @@ class SavedResultsFragment : Fragment() {
             val imageId = originalsCursor.getInt(0)
             val image: ByteArray =
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
-            val date = originalsCursor.getString(2)
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            originalsArrayOldest = (arrayListOf(OriginalImage(imageId, image2, date)) + originalsArrayOldest) as MutableList<OriginalImage>
+            originalsArrayOldest = (arrayListOf(OriginalImage(imageId, image2)) + originalsArrayOldest) as MutableList<OriginalImage>
         }
 
         originalsCursor.moveToFirst()
@@ -103,17 +101,16 @@ class SavedResultsFragment : Fragment() {
             val imageId = originalsCursor.getInt(0)
             val image: ByteArray =
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
-            val date = originalsCursor.getString(2)
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
             for (item in orderArray) {
-                originalsArraySize += OriginalImage(-1, image2, "-1")
+                originalsArraySize += OriginalImage(-1, image2)
             }
 
             if (orderArray.contains(imageId)) {
                 originalsArraySize[orderArray.indexOf(imageId)] =
-                    OriginalImage(imageId, image2, date)
+                    OriginalImage(imageId, image2)
             } else {
-                originalsArraySize += (OriginalImage(imageId, image2, date))
+                originalsArraySize += (OriginalImage(imageId, image2))
             }
         }
 
@@ -121,10 +118,9 @@ class SavedResultsFragment : Fragment() {
             val imageId = resultsCursor.getInt(0)
             val image: ByteArray =
                 resultsCursor.getBlob(resultsCursor.getColumnIndexOrThrow("image"))
-            val date = resultsCursor.getString(2)
             val original = resultsCursor.getInt(3)
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            resultsArray += ResultsImage(imageId, image2, date, original)
+            resultsArray += ResultsImage(imageId, image2, original)
         }
 
 
