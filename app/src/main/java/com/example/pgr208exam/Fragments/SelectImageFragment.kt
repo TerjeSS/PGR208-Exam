@@ -163,6 +163,7 @@ class SelectImageFragment : Fragment() {
                     dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
                         put("image", (activity as MainActivity).bitArray(croppedBitmap))
                     })
+                    dbHelper.close()
 
 
                     //Creating a jpeg-file of the bitmap and saving it on the device

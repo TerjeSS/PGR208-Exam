@@ -11,9 +11,12 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.pgr208exam.Fragments.SavedResultsFragment
@@ -75,13 +78,14 @@ class FullScreenImage : AppCompatActivity() {
                 while (cursor.moveToNext()) {
                     originalId = cursor.getInt(0)
                 }
+                cursor.close()
 
                 dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
                     put("image", result)
                     put("original", originalId)
                     Toast.makeText(applicationContext, "Image saved to application database", Toast.LENGTH_LONG).show()
                 })
-
+                dbHelper.close()
             }
 
             Glide.with(this).load(fullImageUrl).into(fullImageView)
@@ -90,6 +94,8 @@ class FullScreenImage : AppCompatActivity() {
             saveBtn.setOnClickListener {
                 if (tableAndId != null) {
                     dbHelper.writableDatabase.delete("${tableAndId.get(0)}", "id = ${tableAndId.get(1)}", null)
+                    Toast.makeText(this, "Image deleted. Refresh to update list", Toast.LENGTH_LONG).show()
+                    finish()
                 }
             }
 
