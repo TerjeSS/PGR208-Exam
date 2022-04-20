@@ -5,6 +5,10 @@
     <string name="somethingWentWrongTextView">Something went wrong</string>
     <string name="onErrorTextView">Could not upload image. Did you allow access to files and/or internet?</string>
     <string name="successTextView">Success! View the images in results</string>
+    <string name="uploadText">Please upload a picture to see the results</string>
+    <string name="noImagesText">No images found</string>
+    <string name="uploadBtnText">upload</string>
+
 
     <string-array name="sorting_array">
         <item>Newest</item>

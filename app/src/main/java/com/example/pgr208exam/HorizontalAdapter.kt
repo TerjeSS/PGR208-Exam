@@ -46,7 +46,9 @@ class HorizontalAdapter(val list: ArrayList<SavedResultsFragment.ResultsImage>, 
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
             val byteArray = stream.toByteArray()
             val intent = Intent(context, FullScreenImage().javaClass)
+            val tableAndId: ArrayList<String> = arrayListOf("results", list[position].id.toString())
             intent.putExtra("bitmapImage", byteArray)
+            intent.putExtra("tableAndId", tableAndId)
             context.startActivity(intent)
         }
     }

@@ -1,6 +1,8 @@
 package com.example.pgr208exam.Fragments
 
 import android.app.Activity
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -16,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.contentValuesOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
@@ -43,9 +46,9 @@ class SelectImageFragment : Fragment() {
     lateinit var uploadButton: Button
     lateinit var rotateLeftButton: Button
     lateinit var rotateRightButton: Button
+
     lateinit var seeResultTextView: TextView
     private val viewModel: SharedViewModel by activityViewModels()
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,11 +79,13 @@ class SelectImageFragment : Fragment() {
 
         uploadButton.setOnClickListener(View.OnClickListener {
             //Ask the user for access to manage all files on the device
+            (activity as MainActivity).deleteUnused()
             requestPermission()
             val i = Intent()
             i.type = "image/*"
             i.action = Intent.ACTION_GET_CONTENT
             uploadButton.text = "upload"
+            uploadButton.text = getString(R.string.uploadBtnText)
             startForResult.launch(i)
         })
         return view
@@ -124,6 +129,7 @@ class SelectImageFragment : Fragment() {
                 selectImageView.setImageBitmap(selectedImage)
 
                 //Adding elements after successfully adding image
+
                 selectTextView.text = getString(R.string.ImageIsReadyTextView)
                 uploadButton.visibility = View.VISIBLE
                 rotateLeftButton.visibility = View.VISIBLE
@@ -133,6 +139,7 @@ class SelectImageFragment : Fragment() {
 
                 if (it.resultCode != Activity.RESULT_OK) {
                     selectTextView.text = getString(R.string.somethingWentWrongTextView)
+
                 }
 
                 //OnClick to rotate image to the left
@@ -146,11 +153,22 @@ class SelectImageFragment : Fragment() {
                 }
 
 
+                //OnClick to rotate image to the right
+                rotateRightButton.setOnClickListener() {
+                    selectImageView.rotateImage(90)
+                }
+
+
                 //OnClick to crop and upload to the server
                 uploadButton.setOnClickListener() {
                     //Bitmap of cropped image
                     val croppedBitmap: Bitmap = selectImageView.croppedImage
                     selectImageView.setImageBitmap(croppedBitmap)
+
+                    val dbHelper = FeedReaderDbHelper(requireContext())
+                    dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
+                        put("image", (activity as MainActivity).bitArray(croppedBitmap))
+                    })
 
 
                     //Creating a jpeg-file of the bitmap and saving it on the device
@@ -196,7 +214,6 @@ class SelectImageFragment : Fragment() {
                                 selectImageView.setBackgroundResource(R.drawable.icon)
                                 seeResultTextView.visibility = View.GONE
 
-
                                 //animation on icon
                                 selectImageView.animate().apply {
                                     duration = 2000
@@ -211,12 +228,13 @@ class SelectImageFragment : Fragment() {
                                 uploadButton.visibility = View.GONE
                                 rotateLeftButton.visibility = View.GONE
                                 rotateRightButton.visibility = View.GONE
-                                selectTextView.text =
-                                    getString(R.string.onErrorTextView)
+                                selectTextView.text = getString(R.string.onErrorTextView)
                                 Log.i("This is the error", anError.errorBody)
                             }
                         })
                 }
             }
         }
+
 }
+
