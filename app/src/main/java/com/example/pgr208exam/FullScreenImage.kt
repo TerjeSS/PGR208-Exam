@@ -91,8 +91,6 @@ class FullScreenImage : AppCompatActivity() {
                 if (tableAndId != null) {
                     dbHelper.writableDatabase.delete("${tableAndId.get(0)}", "id = ${tableAndId.get(1)}", null)
                 }
-                val intent = Intent(this, SavedResultsFragment().javaClass)
-                this.startActivity(intent)
             }
 
             val bitmapImage = BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage!!.size)

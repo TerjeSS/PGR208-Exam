@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        deleteUnused()
         //onCreate for the main activity
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
