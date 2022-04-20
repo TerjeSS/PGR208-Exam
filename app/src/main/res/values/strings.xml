@@ -2,6 +2,9 @@
     <string name="app_name">PGR208Exam</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello image search fragment</string>
+    <string name="uploadText">Please upload a picture to see the results</string>
+    <string name="noImagesText">No images found</string>
+    <string name="uploadBtnText">upload</string>
 
     <string-array name="sorting_array">
         <item>Newest</item>

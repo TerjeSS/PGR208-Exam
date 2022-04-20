@@ -9,10 +9,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.pgr208exam.Fragments.SavedResultsFragment
 import java.io.ByteArrayOutputStream
@@ -25,11 +27,9 @@ import kotlin.collections.ArrayList
 
 class FullScreenImage : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_full_screen_image)
-
         val fullImageUrl = intent.getStringExtra("fullImageUrl")
         val byteArrayImage = intent.getByteArrayExtra("bitmapImage")
         val tableAndId = intent.getStringArrayListExtra("tableAndId")
@@ -54,7 +54,7 @@ class FullScreenImage : AppCompatActivity() {
                 outstream = contentResolver.openOutputStream(uri!!)!!
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outstream)
                 outstream.close()
-                Toast.makeText(applicationContext, "Success", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Image downloaded to device", Toast.LENGTH_LONG).show()
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(applicationContext, "error occurred", Toast.LENGTH_LONG).show()
@@ -79,6 +79,7 @@ class FullScreenImage : AppCompatActivity() {
                 dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
                     put("image", result)
                     put("original", originalId)
+                    Toast.makeText(applicationContext, "Image saved to application database", Toast.LENGTH_LONG).show()
                 })
 
             }
@@ -90,8 +91,6 @@ class FullScreenImage : AppCompatActivity() {
                 if (tableAndId != null) {
                     dbHelper.writableDatabase.delete("${tableAndId.get(0)}", "id = ${tableAndId.get(1)}", null)
                 }
-                val intent = Intent(this, SavedResultsFragment().javaClass)
-                this.startActivity(intent)
             }
 
             val bitmapImage = BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage!!.size)

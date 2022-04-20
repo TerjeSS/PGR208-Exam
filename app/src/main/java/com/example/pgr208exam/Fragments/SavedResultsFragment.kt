@@ -132,6 +132,7 @@ class SavedResultsFragment : Fragment() {
                         val tableAndId: ArrayList<String> = arrayListOf("originals", item.id.toString())
                         intent.putExtra("bitmapImage", byteArray)
                         intent.putExtra("tableAndId", tableAndId)
+                        activity?.onBackPressed()
                         requireContext().startActivity(intent)
                     }
 

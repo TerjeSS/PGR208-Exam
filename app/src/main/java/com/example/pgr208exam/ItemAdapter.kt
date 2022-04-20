@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class ItemAdapter(
-    val imageList: List<String>,
+    private val imageList: List<String>,
     val context: Context
 ) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
@@ -33,6 +33,7 @@ class ItemAdapter(
             run {
                 val intent = Intent(context, FullScreenImage().javaClass)
                 intent.putExtra("fullImageUrl", imageUrl)
+                intent.putExtra("originalImage", imageUrl)
                 context.startActivity(intent)
             }
         }

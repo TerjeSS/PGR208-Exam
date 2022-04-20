@@ -70,11 +70,12 @@ class SelectImageFragment : Fragment() {
 
         uploadButton.setOnClickListener(View.OnClickListener {
             //Ask the user for access to manage all files on the device
+            (activity as MainActivity).deleteUnused()
             requestPermission()
             val i = Intent()
             i.type = "image/*"
             i.action = Intent.ACTION_GET_CONTENT
-            uploadButton.text = "upload"
+            uploadButton.text = getString(R.string.uploadBtnText)
             startForResult.launch(i)
         })
         return view
