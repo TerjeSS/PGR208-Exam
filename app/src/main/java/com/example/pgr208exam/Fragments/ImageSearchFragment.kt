@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -40,9 +41,10 @@ class ImageSearchFragment() : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
 
         //Checking to see if the fragment has a saved imageList
         if(savedInstanceState != null){
@@ -66,6 +68,8 @@ class ImageSearchFragment() : Fragment() {
 
         //Check to see if user has uploaded a image
         if (!url.startsWith("http") && imageList.isEmpty()) {
+            view.findViewById<LinearLayout>(R.id.buttonLayout).visibility = GONE;
+            view.findViewById<TextView>(R.id.search_engine_tv).visibility = GONE;
             Toast.makeText(requireContext(), "No image uploaded to server", Toast.LENGTH_LONG)
                 .show();
             view.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = GONE;

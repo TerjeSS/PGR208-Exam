@@ -7,7 +7,9 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/search_engine_tv"
         android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
         android:textSize="25sp"
         android:textStyle="bold"
         android:layout_gravity="center"
@@ -28,28 +30,34 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:tag="google"
-            android:text="Google" />
+            android:text="google" />
 
         <Button
             android:layout_margin="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="bing"
             android:text="Bing" />
 
         <Button
             android:layout_margin="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="tineye"
             android:text="Tineye" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/loadingTextView"
+        android:textSize="25sp"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Images are being loaded from server" />
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="Images are being loaded from the server" />
 
     <RelativeLayout
         android:id="@+id/loadingPanel"
