@@ -27,18 +27,20 @@ class ImageSearchFragment() : Fragment() {
     //Dummy-data to not overload server
     //private val dummyData = Constants.getDummyData();
 
+    private lateinit var googleBtn: Button
+    private lateinit var tineyeBtn: Button
+    private lateinit var bingBtn: Button
     private val viewModel: SharedViewModel by activityViewModels()
     private var url = "";
     private var imageList: ArrayList<String> = ArrayList();
-    private var googleBtn= view?.findViewById<Button>(R.id.googleBtn)
-    private var bingBtn= view?.findViewById<Button>(R.id.bingBtn)
-    private var tineyeBtn= view?.findViewById<Button>(R.id.tineyeBtn)
 
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
     }
 
@@ -47,11 +49,6 @@ class ImageSearchFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-        googleBtn?.setOnClickListener {
-
-        }
 
         //Checking to see if the fragment has a saved imageList
         if(savedInstanceState != null){
@@ -70,6 +67,10 @@ class ImageSearchFragment() : Fragment() {
         }
         // Inflate the layout for this fragment, with 3 views created on each row
         val view: View = inflater.inflate(R.layout.fragment_image_search, container, false)
+        googleBtn = view.findViewById<Button>(R.id.googleBtn)
+        tineyeBtn = view.findViewById<Button>(R.id.tineyeBtn)
+        bingBtn = view.findViewById<Button>(R.id.bingBtn)
+
         val recyclerView: RecyclerView = view.findViewById(R.id.rc_view)
         recyclerView.layoutManager = GridLayoutManager(context, 3)
 
@@ -82,21 +83,52 @@ class ImageSearchFragment() : Fragment() {
             view.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = GONE;
             view.findViewById<TextView>(R.id.loadingTextView).text =
                 "Please upload a picture to see the results"
-        } else if(imageList.isEmpty()) {
-            //If user has uploaded image and gotten response, GET request is executed
-            AndroidNetworking.get("http://api-edu.gtl.ai/api/v1/imagesearch/bing?url=$url")
-                .build()
-                .getAsJSONArray(object : JSONArrayRequestListener {
-                    override fun onResponse(response: JSONArray) {
 
-                        if(response.length() == 0) {
-                            Toast.makeText(context, "The server couldent find any images", Toast.LENGTH_SHORT).show()
-                            view.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = GONE;
-                            view.findViewById<TextView>(R.id.loadingTextView).text = "Server could not find any images, please try again"
-                            viewModel.changeResponseFromPost("")
+        }
+        else {
+            recyclerView.adapter = context?.let { ItemAdapter(imageList, it) };
+            view.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = GONE;
+            view.findViewById<TextView>(R.id.loadingTextView).visibility = GONE;
+        }
 
-                        }
-                        else {
+        googleBtn.setOnClickListener {
+            Toast.makeText(context, "Searching...",Toast.LENGTH_SHORT).show()
+            searchImages(view, recyclerView)
+        }
+        tineyeBtn.setOnClickListener {
+            Toast.makeText(context, "Searching...",Toast.LENGTH_SHORT).show()
+            searchImages(view, recyclerView)
+        }
+        bingBtn.setOnClickListener {
+            Toast.makeText(context, "Searching...",Toast.LENGTH_SHORT).show()
+            searchImages(view, recyclerView)
+        }
+        return view;
+    }
+
+    private fun searchImages(
+        view: View,
+        recyclerView: RecyclerView
+    ) {
+        view.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = VISIBLE;
+
+        AndroidNetworking.get("http://api-edu.gtl.ai/api/v1/imagesearch/bing?url=$url")
+            .build()
+            .getAsJSONArray(object : JSONArrayRequestListener {
+                override fun onResponse(response: JSONArray) {
+
+                    if (response.length() == 0) {
+                        Toast.makeText(
+                            context,
+                            "The server couldent find any images",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        view.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = GONE;
+                        view.findViewById<TextView>(R.id.loadingTextView).text =
+                            "Server could not find any images, please try again"
+                        viewModel.changeResponseFromPost("")
+
+                    } else {
                         for (index in 0 until response.length()) {
                             val imageURL =
                                 (response.get(index) as JSONObject).getString("image_link")
@@ -108,34 +140,27 @@ class ImageSearchFragment() : Fragment() {
                         view.findViewById<TextView>(R.id.loadingTextView).visibility = GONE;
                         viewModel.changeResponseFromPost("")
 
-                        }
-                    }
-
-
-                    override fun onError(anError: ANError?) {
-                        val textView = view.findViewById<TextView>(R.id.loadingTextView)
-                        textView.visibility = VISIBLE
-                        textView.text =
-                           anError.toString()
-                        Log.i("error", "there was an error $anError")
                     }
                 }
-                )
-        }
-        else {
-            recyclerView.adapter = context?.let { ItemAdapter(imageList, it) };
-            view.findViewById<RelativeLayout>(R.id.loadingPanel).visibility = GONE;
-            view.findViewById<TextView>(R.id.loadingTextView).visibility = GONE;
-        }
 
 
-        return view;
+                override fun onError(anError: ANError?) {
+                    val textView = view.findViewById<TextView>(R.id.loadingTextView)
+                    textView.visibility = VISIBLE
+                    textView.text =
+                        anError.toString()
+                    Log.i("error", "there was an error $anError")
+                }
+            }
+            )
     }
 
-        override fun onSaveInstanceState(outState: android.os.Bundle) {
+    override fun onSaveInstanceState(outState: android.os.Bundle) {
             super.onSaveInstanceState(outState)
             outState.putStringArrayList("imageList", imageList)
         }
+
+
 
     //Tror bare denne trengs hvis man skal auto-update noe på UIen
     /* override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
