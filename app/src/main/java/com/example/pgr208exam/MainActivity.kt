@@ -3,15 +3,9 @@ package com.example.pgr208exam
 
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -82,4 +76,12 @@ class MainActivity : AppCompatActivity() {
 
         return cursor
     }
+    fun bitArray(x: Bitmap): ByteArray {
+        //Convert image to bitArray
+        val stream = ByteArrayOutputStream()
+        x.compress(Bitmap.CompressFormat.PNG, 100, stream)
+
+        return stream.toByteArray();
+    }
+}
 
