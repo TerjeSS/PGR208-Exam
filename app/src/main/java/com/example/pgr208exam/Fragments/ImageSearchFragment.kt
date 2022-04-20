@@ -7,10 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,6 +30,11 @@ class ImageSearchFragment() : Fragment() {
     private val viewModel: SharedViewModel by activityViewModels()
     private var url = "";
     private var imageList: ArrayList<String> = ArrayList();
+    private var googleBtn= view?.findViewById<Button>(R.id.googleBtn)
+    private var bingBtn= view?.findViewById<Button>(R.id.bingBtn)
+    private var tineyeBtn= view?.findViewById<Button>(R.id.tineyeBtn)
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +47,11 @@ class ImageSearchFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
+        googleBtn?.setOnClickListener {
+
+        }
 
         //Checking to see if the fragment has a saved imageList
         if(savedInstanceState != null){
