@@ -84,6 +84,8 @@ class SavedResultsFragment : Fragment() {
         return view
     }
 
+
+
     fun createLayout(
         sortingArray: Array<out String>,
         originalsArrayNewest: MutableList<OriginalImage>,
@@ -135,7 +137,9 @@ class SavedResultsFragment : Fragment() {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                         val byteArray = stream.toByteArray()
                         val intent = Intent(requireContext(), FullScreenImage().javaClass)
+                        val tableAndId: ArrayList<String> = arrayListOf("originals", item.id.toString())
                         intent.putExtra("bitmapImage", byteArray)
+                        intent.putExtra("tableAndId", tableAndId)
                         requireContext().startActivity(intent)
                     }
 
@@ -168,6 +172,8 @@ class SavedResultsFragment : Fragment() {
             }
         }
     }
+
+
 
     fun fetchData(
         orderArray: MutableList<Int>,

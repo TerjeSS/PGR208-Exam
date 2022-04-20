@@ -1,6 +1,7 @@
 package com.example.pgr208exam
 
 import android.content.ContentValues
+import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,11 +14,13 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.pgr208exam.Fragments.SavedResultsFragment
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class FullScreenImage : AppCompatActivity() {
@@ -29,6 +32,7 @@ class FullScreenImage : AppCompatActivity() {
 
         val fullImageUrl = intent.getStringExtra("fullImageUrl")
         val byteArrayImage = intent.getByteArrayExtra("bitmapImage")
+        val tableAndId = intent.getStringArrayListExtra("tableAndId")
         val fullImageView: ImageView = findViewById(R.id.fullImageView)
         val downloadBtn: Button = findViewById(R.id.btn_download)
         val saveBtn: Button = findViewById(R.id.btn_save)
@@ -59,32 +63,37 @@ class FullScreenImage : AppCompatActivity() {
         }
 
 
+        if (byteArrayImage == null) {
+            saveBtn.setOnClickListener {
+                val bitmap = (fullImageView.drawable as BitmapDrawable).bitmap
+                val stream = ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                val result = stream.toByteArray();
 
-        saveBtn.setOnClickListener {
-            val bitmap = (fullImageView.drawable as BitmapDrawable).bitmap
-            val stream = ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val result = stream.toByteArray();
+                val cursor: Cursor = dbHelper.writableDatabase.rawQuery("SELECT MAX(id) FROM originals", null)
+                var originalId: Int = -1
+                while (cursor.moveToNext()) {
+                    originalId = cursor.getInt(0)
+                }
 
-            val cursor: Cursor = dbHelper.writableDatabase.rawQuery("SELECT MAX(id) FROM originals", null)
-            var originalId: Int = -1
-            while (cursor.moveToNext()) {
-                originalId = cursor.getInt(0)
+                dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
+                    put("image", result)
+                    put("original", originalId)
+                })
+
             }
 
-            dbHelper.writableDatabase.insert("results", null, ContentValues().apply {
-                put("image", result)
-                put("original", originalId)
-            })
-
-        }
-
-
-
-
-        if (byteArrayImage == null) {
             Glide.with(this).load(fullImageUrl).into(fullImageView)
         } else {
+            saveBtn.text = "DELETE IMAGE"
+            saveBtn.setOnClickListener {
+                if (tableAndId != null) {
+                    dbHelper.writableDatabase.delete("${tableAndId.get(0)}", "id = ${tableAndId.get(1)}", null)
+                }
+                val intent = Intent(this, SavedResultsFragment().javaClass)
+                this.startActivity(intent)
+            }
+
             val bitmapImage = BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage!!.size)
             Glide.with(this).load(bitmapImage).into(fullImageView)
         }
