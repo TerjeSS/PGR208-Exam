@@ -28,14 +28,6 @@ class SavedResultsFragment : Fragment() {
 
     lateinit var linearLayout: LinearLayout
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
