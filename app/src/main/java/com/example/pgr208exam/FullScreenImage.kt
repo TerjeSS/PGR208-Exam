@@ -50,7 +50,7 @@ class FullScreenImage : AppCompatActivity() {
                 outstream = contentResolver.openOutputStream(uri!!)!!
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outstream)
                 outstream.close()
-                Toast.makeText(applicationContext, "Success", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Image downloaded to device", Toast.LENGTH_LONG).show()
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(applicationContext, "error occurred", Toast.LENGTH_LONG).show()
@@ -75,7 +75,7 @@ class FullScreenImage : AppCompatActivity() {
                 put("image", result)
                 put("original", 12)
             })
-
+                Toast.makeText(applicationContext, "Image saved to application database", Toast.LENGTH_LONG).show()
         }
 
 
