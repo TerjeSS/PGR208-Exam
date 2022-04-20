@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -38,6 +41,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.navigationView)
         val navController = navHostFragment.navController
+
 
 
         bottomNavigationView.setupWithNavController(navController)
@@ -72,13 +76,4 @@ class MainActivity : AppCompatActivity() {
         return cursor
     }
 
-    fun bitArray(x: Int): ByteArray {
-        //Convert image to bitArray
-        val stream = ByteArrayOutputStream()
-        val bitmap = BitmapFactory.decodeResource(resources, x)
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-
-        return stream.toByteArray();
-
-    }
 }

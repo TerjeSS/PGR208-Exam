@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">PGR208Exam</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello image search fragment</string>
+    <string name="ImageIsReadyTextView">Image is ready, now you can crop it</string>
+    <string name="somethingWentWrongTextView">Something went wrong</string>
+    <string name="onErrorTextView">Could not upload image. Did you allow access to files and/or internet?</string>
+    <string name="successTextView">Success! View the images in results</string>
 
     <string-array name="sorting_array">
         <item>Newest</item>
