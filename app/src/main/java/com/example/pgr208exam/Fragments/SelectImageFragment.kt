@@ -74,7 +74,7 @@ class SelectImageFragment : Fragment() {
             val i = Intent()
             i.type = "image/*"
             i.action = Intent.ACTION_GET_CONTENT
-            uploadButton.text = "upload"
+            uploadButton.text = getString(R.string.uploadBtnText)
             startForResult.launch(i)
         })
         return view
