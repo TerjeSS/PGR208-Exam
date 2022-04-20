@@ -94,15 +94,7 @@ class FullScreenImage : AppCompatActivity() {
             saveBtn.setOnClickListener {
                 if (tableAndId != null) {
                     dbHelper.writableDatabase.delete("${tableAndId.get(0)}", "id = ${tableAndId.get(1)}", null)
-                    val frg: Fragment? = supportFragmentManager.findFragmentById(R.id.savedResultsFragment)
-                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                    if (frg != null) {
-                        ft.detach(frg)
-                    }
-                    if (frg != null) {
-                        ft.attach(frg)
-                    }
-                    ft.commit()
+                    Toast.makeText(this, "Image deleted. Refresh to update list", Toast.LENGTH_LONG).show()
                     finish()
                 }
             }
