@@ -21,6 +21,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.contentValuesOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navDeepLink
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.androidnetworking.AndroidNetworking
 import com.androidnetworking.common.Priority
@@ -31,6 +35,7 @@ import com.example.pgr208exam.*
 import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
+import android.content.Context as Context1
 
 
 class SelectImageFragment : Fragment() {
@@ -41,6 +46,8 @@ class SelectImageFragment : Fragment() {
     lateinit var uploadButton: Button
     lateinit var rotateLeftButton: Button
     lateinit var rotateRightButton: Button
+
+    lateinit var seeResultTextView: TextView
     private val viewModel: SharedViewModel by activityViewModels()
 
 
@@ -61,6 +68,8 @@ class SelectImageFragment : Fragment() {
         uploadButton = view.findViewById(R.id.upload_button)
         rotateLeftButton = view.findViewById(R.id.rotate_left_button)
         rotateRightButton = view.findViewById(R.id.rotate_right_button)
+        seeResultTextView = view.findViewById(R.id.seeResultTextView)
+
 
         //animation on icon
         selectImageView.animate().apply {
@@ -75,6 +84,7 @@ class SelectImageFragment : Fragment() {
             val i = Intent()
             i.type = "image/*"
             i.action = Intent.ACTION_GET_CONTENT
+            uploadButton.text = "upload"
             uploadButton.text = getString(R.string.uploadBtnText)
             startForResult.launch(i)
         })
@@ -94,7 +104,7 @@ class SelectImageFragment : Fragment() {
                         Uri.parse(
                             String.format(
                                 "package:%s",
-                                getApplicationContext<Context>().packageName
+                                getApplicationContext<Context1>().packageName
                             )
                         )
                     startActivity(intent)
@@ -119,15 +129,17 @@ class SelectImageFragment : Fragment() {
                 selectImageView.setImageBitmap(selectedImage)
 
                 //Adding elements after successfully adding image
-                selectTextView.text = "Image is ready, now you can crop it "
+
+                selectTextView.text = getString(R.string.ImageIsReadyTextView)
                 uploadButton.visibility = View.VISIBLE
                 rotateLeftButton.visibility = View.VISIBLE
                 rotateRightButton.visibility = View.VISIBLE
-                selectImageView.setBackgroundResource(android.R.color.transparent);
+                selectImageView.setBackgroundResource(android.R.color.transparent)
 
 
                 if (it.resultCode != Activity.RESULT_OK) {
-                    selectTextView.text = "Something went wrong 🙄"
+                    selectTextView.text = getString(R.string.somethingWentWrongTextView)
+
                 }
 
                 //OnClick to rotate image to the left
@@ -141,11 +153,18 @@ class SelectImageFragment : Fragment() {
                 }
 
 
+                //OnClick to rotate image to the right
+                rotateRightButton.setOnClickListener() {
+                    selectImageView.rotateImage(90)
+                }
+
+
                 //OnClick to crop and upload to the server
                 uploadButton.setOnClickListener() {
                     //Bitmap of cropped image
                     val croppedBitmap: Bitmap = selectImageView.croppedImage
                     selectImageView.setImageBitmap(croppedBitmap)
+
                     val dbHelper = FeedReaderDbHelper(requireContext())
                     dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
                         put("image", (activity as MainActivity).bitArray(croppedBitmap))
@@ -186,13 +205,14 @@ class SelectImageFragment : Fragment() {
                                 viewModel.changeResponseFromPost(response)
 
                                 //Updating UI
-                                selectTextView.text = "Image is uploaded 👍"
+                                selectTextView.text = getString(R.string.successTextView)
                                 rotateLeftButton.visibility = View.GONE
                                 rotateRightButton.visibility = View.GONE
                                 uploadButton.visibility = View.GONE
                                 selectImageView.setGuidelines(0)
                                 selectImageView.imageResource = android.R.color.transparent
                                 selectImageView.setBackgroundResource(R.drawable.icon)
+                                seeResultTextView.visibility = View.GONE
 
                                 //animation on icon
                                 selectImageView.animate().apply {
@@ -208,12 +228,13 @@ class SelectImageFragment : Fragment() {
                                 uploadButton.visibility = View.GONE
                                 rotateLeftButton.visibility = View.GONE
                                 rotateRightButton.visibility = View.GONE
-                                selectTextView.text =
-                                    "Could not send. Did you allow access to files?"
+                                selectTextView.text = getString(R.string.onErrorTextView)
                                 Log.i("This is the error", anError.errorBody)
                             }
                         })
                 }
             }
         }
+
 }
+

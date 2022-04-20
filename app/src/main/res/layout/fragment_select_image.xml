@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_select_image"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -46,7 +47,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+    </com.edmodo.cropper.CropImageView>
 
     <TextView
         android:id="@+id/textview_select_image"
@@ -56,15 +58,17 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="150dp"
-        android:textColor="@color/black"
+        android:paddingBottom="10dp"
         android:text="Start to select image to upload"
-        android:paddingBottom="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.441"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageview_select_image" />
+        app:layout_constraintTop_toBottomOf="@+id/imageview_select_image"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/upload_button"
@@ -74,10 +78,27 @@
         android:layout_marginEnd="150dp"
         android:layout_marginBottom="109dp"
         android:text="Select image"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_select_image"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/seeResultTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See results 👇"
+        android:textSize="17dp"
+        android:textColor="#0E0E0E"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_select_image"
+        app:layout_constraintTop_toBottomOf="@+id/upload_button"
+        app:layout_constraintVertical_bias="0.291" />
         android:visibility="visible"
         />
 

@@ -9,6 +9,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,15 +47,18 @@ class ImageSearchFragment : Fragment() {
 
         //Getting the response-url from server, stored in a shared ViewModel with SelectImageFragment
         url = if (viewModel.getResponseFromPost().value != null) {
+
             viewModel.getResponseFromPost().value.toString()
         } else {
             "No picture uploaded"
         }
+
         //Remove the saved imageList state if a new upload has happened
         if(url.startsWith("http")){
             imageList.clear()
         }
         // Inflate the layout for this fragment, with 3 views created on each row
+
         val view: View = inflater.inflate(R.layout.fragment_image_search, container, false)
         googleBtn = view.findViewById(R.id.googleBtn)
         tineyeBtn = view.findViewById(R.id.tineyeBtn)
