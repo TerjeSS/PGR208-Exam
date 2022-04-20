@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             "original NOT IN (SELECT id FROM originals)",
             null
         )
+        dbHelper.close()
     }
 
     fun getImage(table: String): Cursor {

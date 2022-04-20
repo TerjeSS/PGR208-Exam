@@ -118,7 +118,7 @@ class SavedResultsFragment : Fragment() {
                     val imageView: ImageView = ImageView(context)
                     val imageParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
                         250,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
+                        ViewGroup.LayoutParams.MATCH_PARENT
 
                     )
                     imageView.layoutParams = imageParams
@@ -132,7 +132,6 @@ class SavedResultsFragment : Fragment() {
                         val tableAndId: ArrayList<String> = arrayListOf("originals", item.id.toString())
                         intent.putExtra("bitmapImage", byteArray)
                         intent.putExtra("tableAndId", tableAndId)
-                        activity?.onBackPressed()
                         requireContext().startActivity(intent)
                     }
 
@@ -142,7 +141,7 @@ class SavedResultsFragment : Fragment() {
                     val recyclerView: RecyclerView = RecyclerView(requireContext())
                     val recyclerParams = RecyclerView.LayoutParams(
                         RecyclerView.LayoutParams.MATCH_PARENT,
-                        RecyclerView.LayoutParams.WRAP_CONTENT
+                        RecyclerView.LayoutParams.MATCH_PARENT
                     )
                     recyclerView.layoutParams = recyclerParams
                     recyclerView.layoutManager =
@@ -206,6 +205,8 @@ class SavedResultsFragment : Fragment() {
             originalsArrayOldest += OriginalImage(imageId, image2)
         }
 
+        originalsCursor.close()
+
         for (item in originalsArraySize) {
             originalsArraySizeTmp += item
         }
@@ -226,6 +227,8 @@ class SavedResultsFragment : Fragment() {
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
             resultsArray += ResultsImage(imageId, image2, original)
         }
+
+        resultsCursor.close()
     }
 
 }
