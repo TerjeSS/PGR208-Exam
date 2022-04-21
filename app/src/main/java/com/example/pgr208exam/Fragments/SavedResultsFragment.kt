@@ -103,8 +103,8 @@ class SavedResultsFragment : Fragment() {
 
                 var arrayToUse: MutableList<OriginalImage> = arrayListOf()
                 when (sortingArray[pos]) {
-                    "Newest" -> arrayToUse = originalsArrayOldest
-                    "Oldest" -> arrayToUse = originalsArrayNewest
+                    "Newest" -> arrayToUse = originalsArrayNewest
+                    "Oldest" -> arrayToUse = originalsArrayOldest
                     "Collection size" -> arrayToUse = originalsArraySize
                 }
 
@@ -194,21 +194,19 @@ class SavedResultsFragment : Fragment() {
             val image: ByteArray =
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            originalsArrayNewest += OriginalImage(imageId, image2)
+            originalsArrayOldest += OriginalImage(imageId, image2)
             originalsArraySize += OriginalImage(imageId, image2)
         }
         val originalsArraySizeTmp: MutableList<OriginalImage> = arrayListOf()
 
+        originalsCursor.close()
 
-        while (originalsCursor.moveToPrevious()) {
-            val imageId = originalsCursor.getInt(0)
-            val image: ByteArray =
-                originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
-            val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-            originalsArrayOldest += OriginalImage(imageId, image2)
+        for (item in originalsArrayOldest) {
+            originalsArrayNewest += item
         }
 
-        originalsCursor.close()
+        originalsArrayNewest.reverse()
+        originalsArraySize.reverse()
 
         for (item in originalsArraySize) {
             originalsArraySizeTmp += item
