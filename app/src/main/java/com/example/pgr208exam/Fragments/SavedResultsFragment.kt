@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -121,7 +122,7 @@ class SavedResultsFragment : Fragment() {
                     val imageView: ImageView = ImageView(context)
                     val imageParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
                         250,
-                        ViewGroup.LayoutParams.MATCH_PARENT
+                        270
 
                     )
                     imageView.layoutParams = imageParams
@@ -145,6 +146,7 @@ class SavedResultsFragment : Fragment() {
                     val recyclerParams = RecyclerView.LayoutParams(
                         RecyclerView.LayoutParams.MATCH_PARENT,
                         RecyclerView.LayoutParams.MATCH_PARENT
+
                     )
                     recyclerView.layoutParams = recyclerParams
                     recyclerView.layoutManager =
