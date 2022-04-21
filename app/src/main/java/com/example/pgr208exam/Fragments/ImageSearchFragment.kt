@@ -135,7 +135,6 @@ class ImageSearchFragment : Fragment() {
                     textView.visibility = VISIBLE
                     textView.text =
                         anError.toString()
-                    Log.i("error", "there was an error $anError")
                 }
             }
             )
