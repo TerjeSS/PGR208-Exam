@@ -9,11 +9,6 @@
         <entry key="..\:/Users/aadne/Desktop/Skole/android/exam/PGR208-Exam/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/aadne/Desktop/Skole/android/exam/PGR208-Exam/app/src/main/res/layout/fragment_saved_results.xml" value="0.264" />
         <entry key="..\:/Users/aadne/Desktop/Skole/android/exam/PGR208-Exam/app/src/main/res/layout/fragment_select_image.xml" value="0.25" />
-        <entry key="..\:/Users/shell/AndroidStudioProjects/PGR208-Exam/app/src/main/res/drawable/ic_select_image.xml" value="0.1" />
-        <entry key="..\:/Users/shell/AndroidStudioProjects/PGR208-Exam/app/src/main/res/layout/activity_full_screen_image.xml" value="0.10764944275582573" />
-        <entry key="..\:/Users/shell/AndroidStudioProjects/PGR208-Exam/app/src/main/res/layout/fragment_select_image.xml" value="0.2" />
-        <entry key="..\:/Users/shell/AndroidStudioProjects/PGR208-Exam/app/src/main/res/layout/inside_recycler.xml" value="0.10764944275582573" />
-        <entry key="app/src/main/res/layout/activity_full_screen_image.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/activity_full_screen_image.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.27650756835937507" />
         <entry key="app/src/main/res/layout/fragment_image_search.xml" value="0.35313234682436345" />
@@ -22,6 +17,7 @@
         <entry key="app/src/main/res/layout/inside_recycler.xml" value="0.10676627888626367" />
         <entry key="app/src/main/res/layout/result_image.xml" value="0.5233932495117188" />
         <entry key="app/src/main/res/layout/scroll_recycler.xml" value="0.23505434782608695" />
+        <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.24814814814814815" />
       </map>
     </option>
   </component>

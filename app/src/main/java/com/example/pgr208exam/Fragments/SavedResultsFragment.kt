@@ -4,22 +4,19 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pgr208exam.FullScreenImage
 import com.example.pgr208exam.HorizontalAdapter
 import com.example.pgr208exam.MainActivity
 import com.example.pgr208exam.R
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
-import kotlin.concurrent.thread
 
 class SavedResultsFragment : Fragment() {
 

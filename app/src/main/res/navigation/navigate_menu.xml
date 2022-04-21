@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/selectImageFragment"
         android:name="com.example.pgr208exam.Fragments.SelectImageFragment"
-        android:label="Select image"
+        android:label="Upload image"
         tools:layout="@layout/fragment_select_image" />
     <fragment
         android:id="@+id/imageSearchFragment"
         android:name="com.example.pgr208exam.Fragments.ImageSearchFragment"
-        android:label="Image search"
+        android:label="Results"
         tools:layout="@layout/fragment_image_search" />
     <fragment
         android:id="@+id/savedResultsFragment"

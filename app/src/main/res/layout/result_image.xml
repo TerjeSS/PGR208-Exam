@@ -18,7 +18,6 @@
             android:id="@+id/image_view"
             android:layout_gravity="center"
             android:scaleType="center"
-            android:src="@drawable/download"
             />
     </androidx.cardview.widget.CardView>
 

@@ -9,7 +9,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,13 +18,9 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener
 import com.example.pgr208exam.*
 import org.json.JSONArray
 import org.json.JSONObject
-import org.w3c.dom.Text
 
 
 class ImageSearchFragment : Fragment() {
-
-    //Dummy-data to not overload server
-    //private val dummyData = Constants.getDummyData();
 
     private lateinit var googleBtn: Button
     private lateinit var tineyeBtn: Button
@@ -58,12 +53,10 @@ class ImageSearchFragment : Fragment() {
             imageList.clear()
         }
         // Inflate the layout for this fragment, with 3 views created on each row
-
         val view: View = inflater.inflate(R.layout.fragment_image_search, container, false)
         googleBtn = view.findViewById(R.id.googleBtn)
         tineyeBtn = view.findViewById(R.id.tineyeBtn)
         bingBtn = view.findViewById(R.id.bingBtn)
-
         val recyclerView: RecyclerView = view.findViewById(R.id.rc_view)
         recyclerView.layoutManager = GridLayoutManager(context, 3)
 

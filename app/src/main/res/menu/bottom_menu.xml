@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Select image"
+    <item android:title="Upload image"
         android:id="@+id/selectImageFragment"
         android:icon="@drawable/ic_select_image" />
-    <item android:title="Image search"
+    <item android:title="Results"
         android:id="@+id/imageSearchFragment"
         android:icon="@drawable/ic_image_search" />
     <item android:title="Saved results"
