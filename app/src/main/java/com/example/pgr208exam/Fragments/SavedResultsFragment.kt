@@ -41,6 +41,12 @@ class SavedResultsFragment : Fragment() {
         var originalsArrayOldest: MutableList<OriginalImage> = arrayListOf()
         val originalsArraySize: MutableList<OriginalImage> = arrayListOf()
         val resultsArray: MutableList<ResultsImage> = arrayListOf()
+        val deleteAllBtn: Button = view.findViewById(R.id.deleteAllBtn)
+
+        deleteAllBtn.setOnClickListener{
+            (activity as MainActivity).deleteAll()
+            Toast.makeText(context, "All images deleted. Refresh to update", Toast.LENGTH_LONG).show()
+        }
 
         val createViewThread = Thread(Runnable {
 

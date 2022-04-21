@@ -77,6 +77,12 @@ class MainActivity : AppCompatActivity() {
 
         return cursor
     }
+
+    fun deleteAll() {
+        dbHelper.writableDatabase.delete("originals", "id is not null", null)
+        dbHelper.writableDatabase.delete("results", "id is not null", null)
+    }
+
     fun bitArray(x: Bitmap): ByteArray {
         //Convert image to bitArray
         val stream = ByteArrayOutputStream()
