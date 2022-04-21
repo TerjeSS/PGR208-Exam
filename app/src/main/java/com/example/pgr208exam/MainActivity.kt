@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     fun bitArray(x: Bitmap): ByteArray {
         //Convert image to bitArray
         val stream = ByteArrayOutputStream()
-        x.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        x.compress(Bitmap.CompressFormat.JPEG, 15, stream)
 
         return stream.toByteArray();
     }
