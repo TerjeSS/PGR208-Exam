@@ -29,6 +29,7 @@ import com.example.pgr208exam.*
 import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.System.out
 import android.content.Context as Context1
 
 
@@ -40,7 +41,6 @@ class SelectImageFragment : Fragment() {
     lateinit var uploadButton: Button
     lateinit var rotateLeftButton: Button
     lateinit var rotateRightButton: Button
-
     lateinit var seeResultTextView: TextView
     private val viewModel: SharedViewModel by activityViewModels()
 
@@ -117,7 +117,6 @@ class SelectImageFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 imageUri = it.data?.data.toString()
-                Log.i("This is the image URI", imageUri)
                 val selectedImage: Bitmap =
                     getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
                 selectImageView.setImageBitmap(selectedImage)
@@ -159,6 +158,7 @@ class SelectImageFragment : Fragment() {
                     val croppedBitmap: Bitmap = selectImageView.croppedImage
                     selectImageView.setImageBitmap(croppedBitmap)
 
+
                     val dbHelper = FeedReaderDbHelper(requireContext())
                     dbHelper.writableDatabase.insert("originals", null, ContentValues().apply {
                         put("image", (activity as MainActivity).bitArray(croppedBitmap))
@@ -170,7 +170,6 @@ class SelectImageFragment : Fragment() {
                     val filename = "selectedImage.jpeg"
                     val sd = Environment.getExternalStorageDirectory()
                     val dest = File(sd, filename)
-                    Log.i("This is the jpeg", dest.absolutePath)
 
                     try {
                         val out = FileOutputStream(dest)
@@ -182,7 +181,6 @@ class SelectImageFragment : Fragment() {
                     }
 
                     //Upload
-                    Log.i("Button click", "Upload button got clicked")
                     AndroidNetworking.upload("http://api-edu.gtl.ai/api/v1/imagesearch/upload")
                         .addMultipartFile("image", dest)
                         .addMultipartParameter("Content-Type", "image/jpeg")
@@ -192,9 +190,6 @@ class SelectImageFragment : Fragment() {
                         .getAsOkHttpResponseAndString(object :
                             OkHttpResponseAndStringRequestListener {
                             override fun onResponse(okHttpResponse: Response, response: String) {
-                                Log.i("This is the OK code", okHttpResponse.toString())
-                                Log.i("This is the response", response)
-
                                 //Sending result to ImageSearchFragment
                                 val result = response
                                 viewModel.changeResponseFromPost(response)
@@ -224,7 +219,6 @@ class SelectImageFragment : Fragment() {
                                 rotateLeftButton.visibility = View.GONE
                                 rotateRightButton.visibility = View.GONE
                                 selectTextView.text = getString(R.string.onErrorTextView)
-                                Log.i("This is the error", anError.errorBody)
                             }
                         })
                 }
