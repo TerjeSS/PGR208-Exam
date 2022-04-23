@@ -113,7 +113,7 @@ class SavedResultsFragment : Fragment() {
                     val newLayout: LinearLayout = LinearLayout(context)
                     val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        450,
+                        400,
                     )
                     newLayout.orientation = LinearLayout.HORIZONTAL
                     newLayout.layoutParams = params
@@ -122,10 +122,11 @@ class SavedResultsFragment : Fragment() {
                     val imageView: ImageView = ImageView(context)
                     val imageParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
                         250,
-                        270
-
+                        280,
                     )
                     imageView.layoutParams = imageParams
+
+
 
                     imageView.setOnClickListener {
                         val bitmap = imageView.drawable.toBitmap()
@@ -139,8 +140,11 @@ class SavedResultsFragment : Fragment() {
                         requireContext().startActivity(intent)
                     }
 
+
                     imageView.setImageBitmap(item.image)
+                    imageView.setBackgroundResource(R.drawable.custom_border)
                     newLayout.addView(imageView)
+
 
                     val recyclerView: RecyclerView = RecyclerView(requireContext())
                     val recyclerParams = RecyclerView.LayoutParams(
@@ -154,6 +158,7 @@ class SavedResultsFragment : Fragment() {
                     newLayout.addView(recyclerView)
 
                     val randomArray: ArrayList<ResultsImage> = arrayListOf()
+
 
                     for (newItem in resultsArray) {
                         if (newItem.original == item.id) {
