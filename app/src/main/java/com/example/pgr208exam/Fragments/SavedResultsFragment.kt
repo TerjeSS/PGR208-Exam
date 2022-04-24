@@ -36,19 +36,22 @@ class SavedResultsFragment : Fragment() {
 
         linearLayout = view.findViewById(R.id.linearLayout)
 
+        // All arrays used for sorting images
         val sortingArray: Array<out String> = resources.getStringArray(R.array.sorting_array)
         val orderArray: MutableList<Int> = arrayListOf()
         val originalsArrayNewest: MutableList<OriginalImage> = arrayListOf()
         var originalsArrayOldest: MutableList<OriginalImage> = arrayListOf()
         val originalsArraySize: MutableList<OriginalImage> = arrayListOf()
         val resultsArray: MutableList<ResultsImage> = arrayListOf()
-        val deleteAllBtn: Button = view.findViewById(R.id.deleteAllBtn)
 
+        // Button for deleting all images
+        val deleteAllBtn: Button = view.findViewById(R.id.deleteAllBtn)
         deleteAllBtn.setOnClickListener{
             (activity as MainActivity).deleteAll()
             Toast.makeText(context, "All images deleted. Refresh to update", Toast.LENGTH_LONG).show()
         }
 
+        //Thread for querying data and creating the layout
         val createViewThread = Thread(Runnable {
 
             val spinner: Spinner = view.findViewById(R.id.sortSpinner)
@@ -81,7 +84,7 @@ class SavedResultsFragment : Fragment() {
     }
 
 
-
+    // Creating layout based on the arrays
     fun createLayout(
         sortingArray: Array<out String>,
         originalsArrayNewest: MutableList<OriginalImage>,
@@ -91,6 +94,7 @@ class SavedResultsFragment : Fragment() {
         orderArray: MutableList<Int>,
         spinner: Spinner
     ) {
+        // Fetching data from database and adding to arrays
         fetchData(
             orderArray, originalsArrayNewest, originalsArrayOldest, originalsArraySize,
             resultsArray
@@ -100,8 +104,10 @@ class SavedResultsFragment : Fragment() {
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
 
+                // Removes existing views if any
                 linearLayout.removeAllViews();
 
+                // Decides sorting order based on spinner
                 var arrayToUse: MutableList<OriginalImage> = arrayListOf()
                 when (sortingArray[pos]) {
                     "Newest" -> arrayToUse = originalsArrayNewest
@@ -109,6 +115,7 @@ class SavedResultsFragment : Fragment() {
                     "Collection size" -> arrayToUse = originalsArraySize
                 }
 
+                // Lists out all items in corresponding array and adds them to the view
                 for (item in arrayToUse) {
                     val newLayout: LinearLayout = LinearLayout(context)
                     val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
@@ -125,7 +132,6 @@ class SavedResultsFragment : Fragment() {
                         280,
                     )
                     imageView.layoutParams = imageParams
-
 
 
                     imageView.setOnClickListener {
@@ -159,7 +165,7 @@ class SavedResultsFragment : Fragment() {
 
                     val randomArray: ArrayList<ResultsImage> = arrayListOf()
 
-
+                    // Adds items from the resultsArray if their foreign key matches the current item id
                     for (newItem in resultsArray) {
                         if (newItem.original == item.id) {
                             randomArray += newItem
@@ -187,6 +193,7 @@ class SavedResultsFragment : Fragment() {
 
         val orderCursor = ((activity as MainActivity).getImage("resultsNumber"))
 
+        // Gets order of collection size
         while (orderCursor.moveToNext()) {
             val original = orderCursor.getInt(orderCursor.getColumnIndexOrThrow("original"))
             orderArray.add(original)
@@ -196,13 +203,13 @@ class SavedResultsFragment : Fragment() {
         val resultsCursor =
             ((activity as MainActivity).getImage("results"))
 
+        // Gets all original images
         while (originalsCursor.moveToNext()) {
             val imageId = originalsCursor.getInt(0)
             val image: ByteArray =
                 originalsCursor.getBlob(originalsCursor.getColumnIndexOrThrow("image"))
             val image2: Bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
             originalsArrayOldest += OriginalImage(imageId, image2)
-            originalsArraySize += OriginalImage(imageId, image2)
         }
         val originalsArraySizeTmp: MutableList<OriginalImage> = arrayListOf()
 
@@ -210,14 +217,18 @@ class SavedResultsFragment : Fragment() {
 
         for (item in originalsArrayOldest) {
             originalsArrayNewest += item
+            originalsArraySize += item
         }
 
+        // Reverses array from oldest to newest
         originalsArrayNewest.reverse()
         originalsArraySize.reverse()
 
+        // Creates a tmp array and uses it to sort by size based on "orderArray"
         for (item in originalsArraySize) {
             originalsArraySizeTmp += item
         }
+        // When match is found it breaks the loop. There's only 1 match per item, so it reduces amount of checks
         for ((index, item) in orderArray.withIndex()) {
             loop@ for (otherItem in originalsArraySizeTmp) {
                 if (otherItem.id == item) {
@@ -227,6 +238,7 @@ class SavedResultsFragment : Fragment() {
             }
         }
 
+        // Gets all result images
         while (resultsCursor.moveToNext()) {
             val imageId = resultsCursor.getInt(0)
             val image: ByteArray =
